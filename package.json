@@ -2,6 +2,7 @@
   "name": "LVKLogger",
   "version": "1.0.0",
   "description": "A special logging project, planned to be developed into a library for logs.",
+  "repository": "https://github.com/lvkdotsh/logger",
   "main": "index.js",
   "author": "lvkdotsh",
   "license": "MIT",
