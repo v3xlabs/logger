@@ -1,12 +1,24 @@
 {
-  "name": "LVKLogger",
+  "name": "@lvksh/logger",
   "version": "1.0.0",
   "description": "A special logging project, planned to be developed into a library for logs.",
   "repository": "https://github.com/lvkdotsh/logger",
-  "main": "index.js",
-  "author": "lvkdotsh",
+  "main": "dist/index.js",
+  "author": "lvksh",
   "license": "MIT",
+  "type": "module",
   "scripts": {
-    "build":"tsc"
+    "build": "tsc",
+    "debug": "yarn build && node ./test/index.js",
+    "pub": "yarn build && yarn publish --access public"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.11",
+    "chalk": "^5.0.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {
+    "string-length": "^5.0.1"
   }
 }
