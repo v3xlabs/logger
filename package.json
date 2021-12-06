@@ -2,10 +2,10 @@
   "name": "@lvksh/logger",
   "description": "A special logging project, planned to be developed into a library for logs.",
   "repository": "https://github.com/lvkdotsh/logger",
-  "main": "lib/index.js",
   "author": "lvksh",
   "license": "GPL-3.0",
   "type": "module",
+  "exports": "./lib/index.js",
   "files": [
     "/lib"
   ],
@@ -23,5 +23,6 @@
   },
   "dependencies": {
     "strip-ansi": "^7.0.1"
-  }
+  },
+  "version": "1.0.6"
 }
