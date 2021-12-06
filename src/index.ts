@@ -1,4 +1,5 @@
 import stripAnsi from "strip-ansi";
+import { merge } from "./lib/merge";
 
 type LogFunc = (input: string | object | object[] | unknown) => void;
 
@@ -27,7 +28,7 @@ export const createLogger = <A extends string>(
     func = console.log
 ) => {
     // Fill default values incase not overriden by arg
-    const _config: LogConfig = {
+    const completeConfig: LogConfig = {
         ...{
             divider: " ",
             newLine: "├-",
@@ -38,22 +39,21 @@ export const createLogger = <A extends string>(
     };
 
     // Infer the default method config
-    const defaultMethodConfig: MethodConfig = {
+    const inferredMethodConfig: MethodConfig = {
         label: "-",
-        newLine: _config.newLine,
-        newLineEnd: _config.newLineEnd,
+        newLine: completeConfig.newLine,
+        newLineEnd: completeConfig.newLineEnd,
     };
 
     // Convert all string methods to MethodConfig
-    const _methods: { [k in A as string]: Required<MethodConfig> } =
-        Object.assign(
-            {},
-            ...Object.keys(methods).map((a) => {
+    const completeMethods: { [k in A as string]: Required<MethodConfig> } =
+        merge(
+            Object.keys(methods).map((a) => {
                 if (typeof methods[a] == "string") {
                     // Return an inferred MethodConfig
                     return {
                         [a]: {
-                            ...defaultMethodConfig,
+                            ...inferredMethodConfig,
                             ...{
                                 label: methods[a],
                             },
@@ -64,21 +64,20 @@ export const createLogger = <A extends string>(
                 // Return the MethodConfig that was provided
                 return {
                     [a]: {
-                        ...defaultMethodConfig,
+                        ...inferredMethodConfig,
                         ...(methods[a] as MethodConfig),
                     },
                 };
             })
         );
 
+    // Calculate the max length
     const maxLength = Math.max(
-        ...Object.values(_methods).map((a) => stripAnsi(a.label).length)
+        ...Object.values(completeMethods).map((a) => stripAnsi(a.label).length)
     );
 
-    return Object.assign(
-        {},
-        ...Object.keys(_methods).map((a) => {
-            const method = _methods[a];
+    return merge(Object.keys(completeMethods).map((a) => {
+            const method = completeMethods[a];
             const padding = "".padStart(
                 maxLength - stripAnsi(method.label).length,
                 " "
@@ -87,19 +86,19 @@ export const createLogger = <A extends string>(
                 maxLength - stripAnsi(method.newLine).length
             );
             const paddedPre =
-                _config.padding == "PREPEND"
+                completeConfig.padding == "PREPEND"
                     ? calcPadding + method.newLine
                     : method.newLine + calcPadding;
             const calcPaddingEnd = "".padStart(
                 maxLength - stripAnsi(method.newLine).length
             );
             const paddedPreEnd =
-                _config.padding == "PREPEND"
+                completeConfig.padding == "PREPEND"
                     ? calcPaddingEnd + method.newLineEnd
                     : method.newLineEnd + calcPaddingEnd;
 
             const paddedText =
-                _config.padding == "PREPEND"
+                completeConfig.padding == "PREPEND"
                     ? padding + method.label
                     : method.label + padding;
 
@@ -108,10 +107,10 @@ export const createLogger = <A extends string>(
                     s.forEach((v, i, a) => {
                         func(
                             (i == 0
-                                ? paddedText + _config.divider
+                                ? paddedText + completeConfig.divider
                                 : (a.length - 1 == i
                                       ? paddedPreEnd
-                                      : paddedPre) + _config.divider) + v
+                                      : paddedPre) + completeConfig.divider) + v
                         );
                     });
                 },
