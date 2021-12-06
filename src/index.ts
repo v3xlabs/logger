@@ -1,29 +1,8 @@
 import stripAnsi from "strip-ansi";
-import { merge } from "./lib/merge";
+import { LogConfig, LogFunction, MethodConfig } from "./types";
 
-type LogFunc = (input: string | object | object[] | unknown) => void;
-
-type LogFunction<K extends string> = {
-    [a in K]: LogFunc;
-};
-
-type PadType = "PREPEND" | "APPEND";
-
-type LogConfig = {
-    padding: PadType;
-    divider: string;
-    newLine: string;
-    newLineEnd: string;
-};
-
-type MethodConfig = {
-    label: string;
-    newLine?: string;
-    newLineEnd?: string;
-};
-
-export const createLogger = <A extends string>(
-    methods: { [k in A as string]: string | MethodConfig },
+export const createLogger = <A>(
+    methods: { [k in keyof A]: string | MethodConfig },
     config: Partial<LogConfig> = {},
     func = console.log
 ) => {
@@ -47,8 +26,8 @@ export const createLogger = <A extends string>(
 
     // Convert all string methods to MethodConfig
     const completeMethods: { [k in A as string]: Required<MethodConfig> } =
-        merge(
-            Object.keys(methods).map((a) => {
+        Object.assign({}, ...
+            (Object.keys(methods) as (keyof A)[]).map((a) => {
                 if (typeof methods[a] == "string") {
                     // Return an inferred MethodConfig
                     return {
@@ -76,7 +55,7 @@ export const createLogger = <A extends string>(
         ...Object.values(completeMethods).map((a) => stripAnsi(a.label).length)
     );
 
-    return merge(Object.keys(completeMethods).map((a) => {
+    return Object.assign({}, ...Object.keys(completeMethods).map((a) => {
             const method = completeMethods[a];
             const padding = "".padStart(
                 maxLength - stripAnsi(method.label).length,

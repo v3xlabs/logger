@@ -2,26 +2,29 @@
   "name": "@lvksh/logger",
   "description": "A special logging project, planned to be developed into a library for logs.",
   "repository": "https://github.com/lvkdotsh/logger",
-  "main": "lib/index.js",
   "author": "lvksh",
   "license": "GPL-3.0",
-  "type": "module",
+  "types": "./lib/index.d.ts",
+  "main": "./lib/index.js",
   "files": [
-    "/lib"
+    "lib"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "yarn ts && yarn ts:defs",
+    "ts": "tsc",
+    "ts:defs": "tsc --declaration --outDir lib --emitDeclarationOnly",
     "debug": "yarn build && node ./test/index.js",
     "pub": "yarn build && yarn publish --access public"
   },
   "devDependencies": {
     "@types/node": "^16.11.11",
-    "chalk": "^5.0.0",
+    "chalk": "4.0.0",
     "eslint": "^8.4.0",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "strip-ansi": "^7.0.1"
-  }
+    "strip-ansi": "6.0.0"
+  },
+  "version": "1.0.12"
 }
