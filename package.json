@@ -5,14 +5,16 @@
   "author": "lvksh",
   "license": "GPL-3.0",
   "type": "module",
+  "types": "./lib/index.d.ts",
   "exports": "./lib/index.js",
   "files": [
-    "/lib"
+    "lib"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && yarn ts:defs",
     "debug": "yarn build && node ./test/index.js",
-    "pub": "yarn build && yarn publish --access public"
+    "pub": "yarn build && yarn publish --access public",
+    "ts:defs": "tsc --declaration --outDir lib --emitDeclarationOnly"
   },
   "devDependencies": {
     "@types/node": "^16.11.11",
@@ -24,5 +26,5 @@
   "dependencies": {
     "strip-ansi": "^7.0.1"
   },
-  "version": "1.0.6"
+  "version": "1.0.7"
 }
