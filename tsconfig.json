@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
-        "moduleResolution": "node",
+        "moduleResolution": "Node",
         "target": "es5",
-        "module":"es2015",
+        "module":"CommonJS",
         "lib": ["es2015", "es2016", "es2017"],
         "strict": true,
         "sourceMap": true,
@@ -11,7 +11,8 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "outDir": "lib",
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "allowJs": true
     },
     "include": ["src"],
     "exclude": ["node_modules", "test", "lib"]

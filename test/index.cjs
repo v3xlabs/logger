@@ -1,5 +1,5 @@
-import { createLogger } from "../lib/index.js";
-import chalk from "chalk";
+const { createLogger } = require("../lib/index.js")
+const chalk = require("chalk");
 
 const log = createLogger(
     {

@@ -1,4 +1,5 @@
 import stripAnsi from "strip-ansi";
+import { merge } from "./lib/merge";
 import { LogConfig, LogFunction, MethodConfig } from "./types";
 
 export const createLogger = <A extends string>(

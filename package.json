@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "debug": "yarn build && node ./test/index.js",
+    "debug": "yarn build && node ./test/index.cjs",
     "pub": "yarn build && yarn publish --access public"
   },
   "devDependencies": {
