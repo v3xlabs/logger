@@ -1,26 +1,5 @@
 import stripAnsi from "strip-ansi";
-import { merge } from "./lib/merge";
-
-type LogFunc = (input: string | object | object[] | unknown) => void;
-
-type LogFunction<K extends string> = {
-    [a in K]: LogFunc;
-};
-
-type PadType = "PREPEND" | "APPEND";
-
-type LogConfig = {
-    padding: PadType;
-    divider: string;
-    newLine: string;
-    newLineEnd: string;
-};
-
-type MethodConfig = {
-    label: string;
-    newLine?: string;
-    newLineEnd?: string;
-};
+import { LogConfig, LogFunction, MethodConfig } from "./types";
 
 export const createLogger = <A extends string>(
     methods: { [k in A as string]: string | MethodConfig },
