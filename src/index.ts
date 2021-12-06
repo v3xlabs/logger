@@ -83,7 +83,7 @@ export const createLogger = <A>(
 
             return {
                 [a]: (...s: unknown[]) => {
-                    s.forEach((v, i, a) => {
+                    s.join("\n").split("\n").forEach((v, i, a) => {
                         func(
                             (i == 0
                                 ? paddedText + completeConfig.divider
