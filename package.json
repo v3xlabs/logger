@@ -6,6 +6,9 @@
   "author": "lvksh",
   "license": "GPL-3.0",
   "type": "module",
+  "files": [
+    "/lib"
+  ],
   "scripts": {
     "build": "tsc",
     "debug": "yarn build && node ./test/index.js",
