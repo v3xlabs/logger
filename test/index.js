@@ -1,5 +1,5 @@
-import { createLogger } from "../lib/index.js";
-import chalk from "chalk";
+const { createLogger } = require('../lib');
+const chalk = require('chalk');
 
 const log = createLogger(
     {
@@ -12,7 +12,7 @@ const log = createLogger(
         },
         veryBigNetworkError: chalk.bgRed.white.bold`[NETWORK]`,
     },
-    { padding: "PREPEND"},
+    { padding: "PREPEND" },
     console.log
 );
 

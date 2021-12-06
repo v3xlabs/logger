@@ -1,1 +1,0 @@
-export const merge = <K>(...args: K[]) => Object.assign({}, ...args);
