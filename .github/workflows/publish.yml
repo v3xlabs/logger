@@ -12,6 +12,8 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
       - run: yarn
+      - name: Build
+        run: yarn build
       - name: Version
         run: yarn version --new-version "${GITHUB_REF:11}" --no-git-tag-version
       - run: yarn publish
