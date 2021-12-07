@@ -83,13 +83,13 @@ export const createLogger = <A>(
 
             return {
                 [a]: (...s: unknown[]) => {
-                    s.join("\n").split("\n").forEach((v, i, a) => {
+                    s.join("\n").split("\n").forEach((value, index, a) => {
                         func(
-                            (i == 0
+                            (index == 0
                                 ? paddedText + completeConfig.divider
-                                : (a.length - 1 == i
+                                : (a.length - 1 == index
                                       ? paddedPreEnd
-                                      : paddedPre) + completeConfig.divider) + v
+                                      : paddedPre) + completeConfig.divider) + value
                         );
                     });
                 },
