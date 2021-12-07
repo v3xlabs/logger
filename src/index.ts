@@ -55,8 +55,8 @@ export const createLogger = <A>(
         ...Object.values(completeMethods).map((a) => stripAnsi(a.label).length)
     );
 
-    return Object.assign({}, ...Object.keys(completeMethods).map((a) => {
-            const method = completeMethods[a];
+    return Object.assign({}, ...Object.keys(completeMethods).map((methodHandle) => {
+            const method = completeMethods[methodHandle];
             const padding = "".padStart(
                 maxLength - stripAnsi(method.label).length,
                 " "
@@ -64,7 +64,7 @@ export const createLogger = <A>(
             const calcPadding = "".padStart(
                 maxLength - stripAnsi(method.newLine).length
             );
-            const paddedPre =
+            const newLinePadding =
                 completeConfig.padding == "PREPEND"
                     ? calcPadding + method.newLine
                     : method.newLine + calcPadding;
@@ -82,14 +82,14 @@ export const createLogger = <A>(
                     : method.label + padding;
 
             return {
-                [a]: (...s: unknown[]) => {
-                    s.join("\n").split("\n").forEach((v, i, a) => {
+                [methodHandle]: (...s: unknown[]) => {
+                    s.join("\n").split("\n").forEach((value, index, array) => {
                         func(
-                            (i == 0
+                            (index == 0
                                 ? paddedText + completeConfig.divider
-                                : (a.length - 1 == i
+                                : (array.length - 1 == index
                                       ? paddedPreEnd
-                                      : paddedPre) + completeConfig.divider) + v
+                                      : newLinePadding) + completeConfig.divider) + value
                         );
                     });
                 },
