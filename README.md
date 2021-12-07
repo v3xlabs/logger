@@ -54,7 +54,7 @@ log.ok("This is the best logging", "library", "you");
 log.info("will probably");
 log.debug("ever use");
 log.veryBigNetworkError`Never Gonna Give You Up!`;
-log.debug("in", "your", "life", "you\'re", "welcome");
+log.debug("in", "your", "life", "you're", "welcome");
 log.info("item 1", "item 2", "item 3", "item 4", "item 5");
 ```
 
