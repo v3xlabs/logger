@@ -23,3 +23,4 @@ log.veryBigNetworkError`Never Gonna Give You Up!`;
 log.debug("in", "your", "life", "you're", "welcome");
 log.info("item 1", "item 2", "item 3", "item 4", "item 5");
 log.info("Look\nat\nthese\namazing\nlogs");
+log.info({object: 'with', values: 'i guess', and: {sub: 'values'}});
