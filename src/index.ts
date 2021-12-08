@@ -14,6 +14,7 @@ export const createLogger = <A>(
             newLine: "├-",
             newLineEnd: "└-",
             padding: "PREPEND",
+            color: true
         },
         ...config,
     };
@@ -89,7 +90,7 @@ export const createLogger = <A>(
                 [methodHandle]: (...s: unknown[]) => {
                     s.map(value => {
                         if (typeof value !== "string") {
-                            value = inspect(value, false, 3);
+                            value = inspect(value, false, 3, process.stdout.hasColors() || completeConfig.color);
                         }
                         return value;
                     }).join("\n")
