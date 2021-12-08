@@ -11,6 +11,7 @@ export type LogConfig = {
     divider: string;
     newLine: string;
     newLineEnd: string;
+    color: boolean;
 };
 
 export type MethodConfig = {
