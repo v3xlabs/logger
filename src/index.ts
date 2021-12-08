@@ -14,7 +14,7 @@ export const createLogger = <A>(
             newLine: "├-",
             newLineEnd: "└-",
             padding: "PREPEND",
-            color: true
+            color: process.stdout.hasColors()
         },
         ...config,
     };
