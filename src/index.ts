@@ -90,7 +90,7 @@ export const createLogger = <A>(
                 [methodHandle]: (...s: unknown[]) => {
                     s.map(value => {
                         if (typeof value !== "string") {
-                            value = inspect(value, false, 3, process.stdout.hasColors() || completeConfig.color);
+                            value = inspect(value, false, 3, completeConfig.color);
                         }
                         return value;
                     }).join("\n")
