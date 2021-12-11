@@ -71,3 +71,6 @@ This section is still work in progress.
 ### MethodConfig
 
 This section is still work in progress.
+
+## Contributors
+[![](https://contrib.rocks/image?repo=lvkdotsh/logger)](https://github.com/lvkdotsh/logger/graphs/contributors)
