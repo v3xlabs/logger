@@ -1,7 +1,5 @@
 name: Node.js Package
-on:
-  release:
-    types: [created]
+on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,10 +11,7 @@ jobs:
           cache: 'yarn'
           registry-url: 'https://registry.npmjs.org'
       - run: yarn
+      - name: Test
+        run: yarn test
       - name: Build
         run: yarn build
-      - name: Version
-        run: yarn version --new-version "${GITHUB_REF:11}" --no-git-tag-version
-      - run: yarn pub
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
