@@ -1,13 +1,16 @@
 ![lvksh logger](./assets/banner.png)
 
+<center>
+    Zero dependency, light-weight, blazing fast customizable logging library
+</center>
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
-  * [example](#usage) (To get you going)
-  * [LoggerConfig](#loggerconfig) (Customization for the entire logger)
-  * [MethodConfig](#methodconfig) (Customization on a per-method basis)
+  - [example](#usage) (To get you going)
+  - [LoggerConfig](#loggerconfig) (Customization for the entire logger)
+  - [MethodConfig](#methodconfig) (Customization on a per-method basis)
 
 ## Installation
 
