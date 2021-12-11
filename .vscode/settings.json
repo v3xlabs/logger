@@ -1,0 +1,13 @@
+{
+  "files.exclude": {
+    "lib": true,
+    "yarn.lock": true,
+    "yarn-error.log": true,
+    ".prettierrc": true,
+    ".gitignore": true,
+    "node_modules": true,
+    ".vscode": true,
+    ".github": true,
+    "coverage": true
+  }
+}
