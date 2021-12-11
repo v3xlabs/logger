@@ -14,12 +14,16 @@
     "ts": "tsc",
     "ts:defs": "tsc --declaration --outDir lib --emitDeclarationOnly",
     "debug": "yarn build && node ./test/index.js",
-    "pub": "yarn build && yarn publish --access public"
+    "pub": "yarn build && yarn publish --access public",
+    "test": "jest --verbose"
   },
   "devDependencies": {
+    "@types/jest": "^27.0.3",
     "@types/node": "^16.11.11",
     "chalk": "4.0.0",
     "eslint": "^8.4.0",
+    "jest": "^27.4.4",
+    "ts-jest": "^27.1.1",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.2"
   },

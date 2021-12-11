@@ -1,7 +1,7 @@
 export type LogFunc = (...input: (string | object | object[] | unknown)[]) => void;
 
-export type LogFunction<K> = {
-    [a in keyof K]: LogFunc;
+export type LogFunction<K extends string> = {
+    [a in K]: LogFunc;
 };
 
 export type PadType = "PREPEND" | "APPEND";

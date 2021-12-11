@@ -2,8 +2,8 @@ import stripAnsi from "strip-ansi";
 import { inspect } from "util";
 import { LogConfig, LogFunction, MethodConfig } from "./types";
 
-export const createLogger = <A>(
-    methods: { [k in keyof A]: string | MethodConfig },
+export const createLogger = <A extends string>(
+    methods: { [k in A]: string | MethodConfig },
     config: Partial<LogConfig> = {},
     func = console.log
 ) => {
@@ -27,10 +27,10 @@ export const createLogger = <A>(
     };
 
     // Convert all string methods to MethodConfig
-    const completeMethods: { [k in A as string]: Required<MethodConfig> } =
+    const completeMethods: { [k in A]: Required<MethodConfig> } =
         Object.assign(
             {},
-            ...(Object.keys(methods) as (keyof A)[]).map((a) => {
+            ...(Object.keys(methods) as A[]).map((a) => {
                 if (typeof methods[a] == "string") {
                     // Return an inferred MethodConfig
                     return {
@@ -55,13 +55,13 @@ export const createLogger = <A>(
 
     // Calculate the max length
     const maxLength = Math.max(
-        ...Object.values(completeMethods).map((a) => stripAnsi(a.label).length)
+        ...Object.values(completeMethods).map((a) => stripAnsi((a as Required<MethodConfig>).label).length)
     );
 
     return Object.assign(
         {},
         ...Object.keys(completeMethods).map((methodHandle) => {
-            const method = completeMethods[methodHandle];
+            const method = completeMethods[methodHandle as A];
             const padding = "".padStart(
                 maxLength - stripAnsi(method.label).length,
                 " "
@@ -88,23 +88,23 @@ export const createLogger = <A>(
 
             return {
                 [methodHandle]: (...s: unknown[]) => {
-                    s.map(value => {
+                    func(s.map(value => {
                         if (typeof value !== "string") {
                             value = inspect(value, false, 3, completeConfig.color);
                         }
                         return value;
                     }).join("\n")
                         .split("\n")
-                        .forEach((value, index, array) => {
-                            func(
-                                (index == 0
-                                    ? paddedText + completeConfig.divider
-                                    : (array.length - 1 == index
-                                          ? paddedPreEnd
-                                          : newLinePadding) +
-                                      completeConfig.divider) + value
-                            );
-                        });
+                        .map((value, index, array) =>
+                            (index == 0
+                                ? paddedText + completeConfig.divider
+                                : (array.length - 1 == index
+                                        ? paddedPreEnd
+                                        : newLinePadding) +
+                                    completeConfig.divider) + value
+                        )
+                        .join("\n")
+                    )
                 },
             };
         })
