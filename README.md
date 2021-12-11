@@ -74,3 +74,9 @@ This section is still work in progress.
 
 ## Contributors
 [![](https://contrib.rocks/image?repo=lvkdotsh/logger)](https://github.com/lvkdotsh/logger/graphs/contributors)
+
+## LICENSE
+
+This package is licensed under the GPLv3 license.
+
+Regex matching within this package is sourced from [ansi-regex](https://github.com/chalk/ansi-regex), which is licensed under [MIT](https://github.com/chalk/ansi-regex/blob/main/license)
