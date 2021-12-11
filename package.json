@@ -27,8 +27,6 @@
     "ts-node": "^10.4.0",
     "typescript": "^4.5.2"
   },
-  "dependencies": {
-    "strip-ansi": "6.0.0"
-  },
+  "dependencies": {},
   "version": "1.0.12"
 }
