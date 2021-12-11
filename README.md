@@ -71,3 +71,10 @@ This section is still work in progress.
 ### MethodConfig
 
 This section is still work in progress.
+
+## Maintainers
+- [Lucemans](https://github.com/lucemans)
+- [Antony](https://github.com/antony1060)
+- [Josh](https://github.com/thejoshuahendrix)
+## Contributors
+[![](https://contrib.rocks/image?repo=lvkdotsh/logger)](https://github.com/lvkdotsh/logger/graphs/contributors)
