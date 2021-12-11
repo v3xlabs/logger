@@ -15,7 +15,7 @@
     "ts:defs": "tsc --declaration --outDir lib --emitDeclarationOnly",
     "debug": "yarn build && node ./test/index.js",
     "pub": "yarn build && yarn publish --access public",
-    "test": "jest --verbose"
+    "test": "jest --verbose --coverage"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
