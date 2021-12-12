@@ -1,6 +1,13 @@
 ![lvksh logger](./assets/banner.png)
 
 <center>
+    <img src="https://img.shields.io/bundlephobia/min/@lvksh/logger.svg"/>
+    <img src="https://img.shields.io/badge/coverage-100%25-brightgreen.svg"/>
+    <img src="https://img.shields.io/github/languages/top/lvkdotsh/logger" />
+    <img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg" />
+    <img src="https://img.shields.io/npm/dt/@lvksh/logger" />
+</center>
+<center>
     Zero dependency, light-weight, blazing fast customizable logging library
 </center>
 
@@ -80,6 +87,6 @@ This section is still work in progress.
 
 ## LICENSE
 
-This package is licensed under the GPLv3 license.
+This package is licensed under the MIT license.
 
 Regex matching within this package is sourced from [ansi-regex](https://github.com/chalk/ansi-regex), which is licensed under [MIT](https://github.com/chalk/ansi-regex/blob/main/license)
