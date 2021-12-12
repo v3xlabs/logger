@@ -9,6 +9,13 @@
   "files": [
     "lib"
   ],
+  "keywords": [
+    "logger",
+    "logging",
+    "chalk",
+    "color",
+    "padleft"
+  ],
   "scripts": {
     "build": "yarn ts && yarn ts:defs",
     "ts": "tsc",
