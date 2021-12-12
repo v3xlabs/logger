@@ -3,7 +3,7 @@
   "description": "A special logging project, planned to be developed into a library for logs.",
   "repository": "https://github.com/lvkdotsh/logger",
   "author": "lvksh",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "types": "./lib/index.d.ts",
   "main": "./lib/index.js",
   "files": [
