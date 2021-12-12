@@ -7,12 +7,12 @@ const ansi = new RegExp(
 
 export const stripAnsi = (input: string) => input.replace(ansi, "");
 
-export type LogFunc = (
+export type LogMethod = (
     ...input: (string | object | object[] | unknown)[]
 ) => void;
 
-export type LogFunction<K extends string> = {
-    [a in K]: LogFunc;
+export type Logger<K extends string> = {
+    [a in K]: LogMethod;
 };
 
 export type PadType = "PREPEND" | "APPEND";
@@ -147,5 +147,5 @@ export const createLogger = <A extends string>(
                 },
             };
         })
-    ) as LogFunction<A>;
+    ) as Logger<A>;
 };

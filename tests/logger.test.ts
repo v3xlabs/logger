@@ -1,10 +1,10 @@
 import chalk from "chalk";
-import { createLogger, LogFunction } from "../src";
+import { createLogger, Logger } from "../src";
 
 const logFn = jest.fn();
 
 describe("Basic Logging", () => {
-    let logger: LogFunction<"ok">;
+    let logger: Logger<"ok">;
 
     beforeAll(() => {
         logger = createLogger(
@@ -40,7 +40,7 @@ describe("Basic Logging", () => {
 });
 
 describe("Objects & Arrays", () => {
-    let logger: LogFunction<"ok">;
+    let logger: Logger<"ok">;
 
     beforeAll(() => {
         logger = createLogger(
@@ -68,8 +68,8 @@ describe("Objects & Arrays", () => {
 });
 
 describe("Prepend vs Append", () => {
-    let loggerPrepend: LogFunction<"short" | "longer">;
-    let loggerAppend: LogFunction<"short" | "longer">;
+    let loggerPrepend: Logger<"short" | "longer">;
+    let loggerAppend: Logger<"short" | "longer">;
 
     beforeAll(() => {
         loggerPrepend = createLogger(
@@ -105,7 +105,7 @@ describe("Prepend vs Append", () => {
 });
 
 describe("Multiline Wrapping", () => {
-    let logger: LogFunction<"plaintext" | "oneline" | "twoline">;
+    let logger: Logger<"plaintext" | "oneline" | "twoline">;
 
     beforeAll(() => {
         logger = createLogger(
@@ -145,7 +145,7 @@ describe("Multiline Wrapping", () => {
 
 describe("Default values", () => {
     let consoleLog: jest.SpyInstance;
-    let logger: LogFunction<"default">;
+    let logger: Logger<"default">;
 
     beforeAll(() => {
         consoleLog = jest.spyOn(console, "log").mockImplementation(() => {});
