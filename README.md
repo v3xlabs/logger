@@ -1,12 +1,11 @@
 ![lvksh logger](./assets/banner.png)
 
-<center>
-    <img src="https://img.shields.io/bundlephobia/min/@lvksh/logger.svg"/>
-    <img src="https://img.shields.io/badge/coverage-100%25-brightgreen.svg"/>
-    <img src="https://img.shields.io/github/languages/top/lvkdotsh/logger" />
-    <img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg" />
-    <img src="https://img.shields.io/npm/dt/@lvksh/logger" />
-</center>
+[![MINIFIED SIZE](https://img.shields.io/bundlephobia/min/@lvksh/logger.svg)]()
+[![COVERAGE](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)]()
+[![LANGUAGES](https://img.shields.io/github/languages/top/lvkdotsh/logger)]()
+[![DEPENDENCIRES](https://img.shields.io/badge/dependencies-0-brightgreen.svg)]()
+[![NPM](https://img.shields.io/npm/dt/@lvksh/logger)]()
+
 <center>
     Zero dependency, light-weight, blazing fast customizable logging library
 </center>
