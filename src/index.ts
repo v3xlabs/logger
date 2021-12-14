@@ -7,8 +7,10 @@ const ansi = new RegExp(
 
 export const stripAnsi = (input: string) => input.replace(ansi, "");
 
+export type LogMethodInput = string | object;
+
 export type LogMethod = (
-    ...input: (string | object | object[] | unknown)[]
+    ...input: LogMethodInput[]
 ) => void;
 
 export type Logger<K extends string> = {
@@ -99,6 +101,14 @@ const pad = (
     if (paddingStrategy === "PREPEND") return calculatedPadding + text;
 };
 
+/**
+ * @name createLogger
+ * Creates a logger with the specified methods and config
+ * Able to output to a logging function
+ * @param methods Config of logging methods
+ * @param [config] Logger-wide configuration
+ * @param [func=console.log] Custom logging function
+ */
 export const createLogger = <A extends string>(
     methods: { [k in A]: string | MethodConfig },
     config: Partial<LogConfig> = {},
@@ -186,7 +196,7 @@ export const createLogger = <A extends string>(
             ];
 
             return {
-                [methodHandle]: (...s: unknown[]) => {
+                [methodHandle]: (...s: LogMethodInput[]) => {
                     func(
                         s
                             .map((value) => {
@@ -207,9 +217,9 @@ export const createLogger = <A extends string>(
                                     (index == 0
                                         ? paddedText + method.divider
                                         : (array.length - 1 == index
-                                              ? newLineEndPadding
-                                              : newLinePadding) +
-                                          method.divider) + value
+                                            ? newLineEndPadding
+                                            : newLinePadding) +
+                                        method.divider) + value
                             )
                             .join("\n")
                     );
