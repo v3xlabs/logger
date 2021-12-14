@@ -23,10 +23,14 @@ export type LogConfig = {
      * @default "PREPEND"
      */
     padding: PadType;
+    /**
+     * The character used to pad
+     * @default " "
+     */
     paddingChar: string;
     /**
      * The divider between the label and the payload
-     *  @default " "
+     * @default " "
      */
     divider: string;
     /**
@@ -47,10 +51,34 @@ export type LogConfig = {
 };
 
 export type MethodConfig = {
+    /**
+     * The label used to prefix log messages
+     * Used for organization and sorting purposes
+     * May contain ansi color codes!
+     */
     label: string;
+    /**
+     * The character to be used when a line needs to be broken
+     * This overrides any value set by the logger
+     * @default "├-"
+     */
     newLine?: string;
+    /**
+     * The character to be used when the last line needs to be broken
+     * This overrides any value set by the logger
+     * @default "└-"
+     */
     newLineEnd?: string;
+    /**
+     * The divider between the label and the payload
+     * This overrides any value set by the logger
+     * @default " "
+     */
     divider?: string;
+    /**
+     * The character used to pad
+     * @default " "
+     */
     paddingChar?: string;
 };
 
@@ -95,7 +123,7 @@ export const createLogger = <A extends string>(
         newLine: completeConfig.newLine,
         newLineEnd: completeConfig.newLineEnd,
         divider: completeConfig.divider,
-        paddingChar: completeConfig.paddingChar
+        paddingChar: completeConfig.paddingChar,
     };
 
     // Convert all string methods to MethodConfig
@@ -137,9 +165,24 @@ export const createLogger = <A extends string>(
             const method = completeMethods[methodHandle as A];
 
             const [paddedText, newLinePadding, newLineEndPadding] = [
-                pad(method.label, maxLength, completeConfig.padding, method.paddingChar),
-                pad(method.newLine, maxLength, completeConfig.padding, method.paddingChar),
-                pad(method.newLineEnd, maxLength, completeConfig.padding, method.paddingChar),
+                pad(
+                    method.label,
+                    maxLength,
+                    completeConfig.padding,
+                    method.paddingChar
+                ),
+                pad(
+                    method.newLine,
+                    maxLength,
+                    completeConfig.padding,
+                    method.paddingChar
+                ),
+                pad(
+                    method.newLineEnd,
+                    maxLength,
+                    completeConfig.padding,
+                    method.paddingChar
+                ),
             ];
 
             return {
