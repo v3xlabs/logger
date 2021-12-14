@@ -19,6 +19,7 @@ export type PadType = "PREPEND" | "APPEND" | "NONE";
 
 export type LogConfig = {
     padding: PadType;
+    paddingChar: string;
     divider: string;
     newLine: string;
     newLineEnd: string;
@@ -30,13 +31,14 @@ export type MethodConfig = {
     newLine?: string;
     newLineEnd?: string;
     divider?: string;
+    paddingChar?: string;
 };
 
 const pad = (
     text: string,
     length: number,
     paddingStrategy: PadType,
-    paddingChar = " "
+    paddingChar: string
 ) => {
     if (paddingStrategy === "NONE") return text;
 
@@ -61,6 +63,7 @@ export const createLogger = <A extends string>(
             newLine: "├-",
             newLineEnd: "└-",
             padding: "PREPEND",
+            paddingChar: " ",
             color: true,
         },
         ...config,
@@ -72,6 +75,7 @@ export const createLogger = <A extends string>(
         newLine: completeConfig.newLine,
         newLineEnd: completeConfig.newLineEnd,
         divider: completeConfig.divider,
+        paddingChar: completeConfig.paddingChar
     };
 
     // Convert all string methods to MethodConfig
@@ -113,9 +117,9 @@ export const createLogger = <A extends string>(
             const method = completeMethods[methodHandle as A];
 
             const [paddedText, newLinePadding, newLineEndPadding] = [
-                pad(method.label, maxLength, completeConfig.padding, " "),
-                pad(method.newLine, maxLength, completeConfig.padding, " "),
-                pad(method.newLineEnd, maxLength, completeConfig.padding, " "),
+                pad(method.label, maxLength, completeConfig.padding, method.paddingChar),
+                pad(method.newLine, maxLength, completeConfig.padding, method.paddingChar),
+                pad(method.newLineEnd, maxLength, completeConfig.padding, method.paddingChar),
             ];
 
             return {
