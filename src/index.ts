@@ -140,10 +140,9 @@ export const createLogger = <A extends string>(
                                     (index == 0
                                         ? paddedText + method.divider
                                         : (array.length - 1 == index
-                                              completeConfig.divider) + value
-                                            ? newLineEndPadding
-                                            : newLinePadding) +
-                                            method.divider) + value
+                                              ? newLineEndPadding
+                                              : newLinePadding) +
+                                          method.divider) + value
                             )
                             .join("\n")
                     );
