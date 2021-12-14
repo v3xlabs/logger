@@ -15,7 +15,7 @@ export type Logger<K extends string> = {
     [a in K]: LogMethod;
 };
 
-export type PadType = "PREPEND" | "APPEND";
+export type PadType = "PREPEND" | "APPEND" | "NONE";
 
 export type LogConfig = {
     padding: PadType;
@@ -30,6 +30,23 @@ export type MethodConfig = {
     newLine?: string;
     newLineEnd?: string;
     divider?: string;
+};
+
+const pad = (
+    text: string,
+    length: number,
+    paddingStrategy: PadType,
+    paddingChar = " "
+) => {
+    if (paddingStrategy === "NONE") return text;
+
+    const calculatedPadding = "".padStart(
+        length - stripAnsi(text).length,
+        paddingChar
+    );
+
+    if (paddingStrategy === "APPEND") return text + calculatedPadding;
+    if (paddingStrategy === "PREPEND") return calculatedPadding + text;
 };
 
 export const createLogger = <A extends string>(
@@ -94,29 +111,12 @@ export const createLogger = <A extends string>(
         {},
         ...Object.keys(completeMethods).map((methodHandle) => {
             const method = completeMethods[methodHandle as A];
-            const padding = "".padStart(
-                maxLength - stripAnsi(method.label).length,
-                " "
-            );
-            const calcPadding = "".padStart(
-                maxLength - stripAnsi(method.newLine).length
-            );
-            const newLinePadding =
-                completeConfig.padding == "PREPEND"
-                    ? calcPadding + method.newLine
-                    : method.newLine + calcPadding;
-            const calcPaddingEnd = "".padStart(
-                maxLength - stripAnsi(method.newLine).length
-            );
-            const paddedPreEnd =
-                completeConfig.padding == "PREPEND"
-                    ? calcPaddingEnd + method.newLineEnd
-                    : method.newLineEnd + calcPaddingEnd;
 
-            const paddedText =
-                completeConfig.padding == "PREPEND"
-                    ? padding + method.label
-                    : method.label + padding;
+            const [paddedText, newLinePadding, newLineEndPadding] = [
+                pad(method.label, maxLength, completeConfig.padding, " "),
+                pad(method.newLine, maxLength, completeConfig.padding, " "),
+                pad(method.newLineEnd, maxLength, completeConfig.padding, " "),
+            ];
 
             return {
                 [methodHandle]: (...s: unknown[]) => {
@@ -140,9 +140,10 @@ export const createLogger = <A extends string>(
                                     (index == 0
                                         ? paddedText + method.divider
                                         : (array.length - 1 == index
-                                              ? paddedPreEnd
-                                              : newLinePadding) +
-                                              method.divider) + value
+                                              completeConfig.divider) + value
+                                            ? newLineEndPadding
+                                            : newLinePadding) +
+                                            method.divider) + value
                             )
                             .join("\n")
                     );
