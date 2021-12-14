@@ -116,11 +116,10 @@ export const createLogger = <A extends string>(
         ...Object.keys(completeMethods).map((methodHandle) => {
             const method = completeMethods[methodHandle as A];
 
-            const [paddedText, newLinePadding, newLineEndPadding] = [
-                pad(method.label, maxLength, completeConfig.padding, method.paddingChar),
-                pad(method.newLine, maxLength, completeConfig.padding, method.paddingChar),
-                pad(method.newLineEnd, maxLength, completeConfig.padding, method.paddingChar),
-            ];
+            const paddedText =
+                completeConfig.padding == "PREPEND"
+                    ? padding + method.label
+                    : method.label + padding;
 
             return {
                 [methodHandle]: (...s: unknown[]) => {
@@ -144,9 +143,9 @@ export const createLogger = <A extends string>(
                                     (index == 0
                                         ? paddedText + method.divider
                                         : (array.length - 1 == index
-                                              ? newLineEndPadding
+                                              ? paddedPreEnd
                                               : newLinePadding) +
-                                          method.divider) + value
+                                              method.divider) + value
                             )
                             .join("\n")
                     );
