@@ -18,11 +18,31 @@ export type Logger<K extends string> = {
 export type PadType = "PREPEND" | "APPEND" | "NONE";
 
 export type LogConfig = {
+    /**
+     * Wether to add spacing in front or behind the specified label
+     * @default "PREPEND"
+     */
     padding: PadType;
     paddingChar: string;
+    /**
+     * The divider between the label and the payload
+     *  @default " "
+     */
     divider: string;
+    /**
+     * The character to be used when a line needs to be broken
+     * @default "├-"
+     */
     newLine: string;
+    /**
+     * The character to be used when the last line needs to be broken
+     * @default "└-"
+     */
     newLineEnd: string;
+    /**
+     * Util.inspect color highlighting
+     * @default true
+     */
     color: boolean;
 };
 
