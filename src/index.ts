@@ -29,6 +29,7 @@ export type MethodConfig = {
     label: string;
     newLine?: string;
     newLineEnd?: string;
+    divider?: string;
 };
 
 export const createLogger = <A extends string>(
@@ -53,6 +54,7 @@ export const createLogger = <A extends string>(
         label: "-",
         newLine: completeConfig.newLine,
         newLineEnd: completeConfig.newLineEnd,
+        divider: completeConfig.divider,
     };
 
     // Convert all string methods to MethodConfig
@@ -136,11 +138,11 @@ export const createLogger = <A extends string>(
                             .map(
                                 (value, index, array) =>
                                     (index == 0
-                                        ? paddedText + completeConfig.divider
+                                        ? paddedText + method.divider
                                         : (array.length - 1 == index
                                               ? paddedPreEnd
                                               : newLinePadding) +
-                                          completeConfig.divider) + value
+                                              method.divider) + value
                             )
                             .join("\n")
                     );
