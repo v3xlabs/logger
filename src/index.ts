@@ -9,9 +9,7 @@ export const stripAnsi = (input: string) => input.replace(ansi, "");
 
 export type LogMethodInput = string | object;
 
-export type LogMethod = (
-    ...input: LogMethodInput[]
-) => void;
+export type LogMethod = (...input: LogMethodInput[]) => void;
 
 export type Logger<K extends string> = {
     [a in K]: LogMethod;
@@ -92,9 +90,8 @@ const pad = (
 ) => {
     if (paddingStrategy === "NONE") return text;
 
-    const calculatedPadding = "".padStart(
-        length - stripAnsi(text).length,
-        paddingChar
+    const calculatedPadding = paddingChar.repeat(
+        "".padStart(length - stripAnsi(text).length, " ").length
     );
 
     if (paddingStrategy === "APPEND") return text + calculatedPadding;
@@ -217,9 +214,9 @@ export const createLogger = <A extends string>(
                                     (index == 0
                                         ? paddedText + method.divider
                                         : (array.length - 1 == index
-                                            ? newLineEndPadding
-                                            : newLinePadding) +
-                                        method.divider) + value
+                                              ? newLineEndPadding
+                                              : newLinePadding) +
+                                          method.divider) + value
                             )
                             .join("\n")
                     );
