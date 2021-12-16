@@ -1,6 +1,6 @@
 {
   "name": "@lvksh/logger",
-  "description": "A special logging project, planned to be developed into a library for logs.",
+  "description": "Zero dependency, light-weight, blazing fast customizable logging library.",
   "repository": "https://github.com/lvkdotsh/logger",
   "author": "lvksh",
   "license": "MIT",
