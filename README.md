@@ -81,7 +81,7 @@ Other Themes:
 
 
 <center>
-    <a href="https://github.com/lvkdotsh/logger/tree/master/examples/Sunfire.ts"><img src="./assets/sunfireexamplelog.png"></a>
+    <a href="https://github.com/lvkdotsh/logger/blob/master/examples/Sunfire.ts"><img src="./assets/sunfireexamplelog.png"></a>
 </center>
 
 ### LoggerConfig
