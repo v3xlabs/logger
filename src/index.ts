@@ -56,18 +56,34 @@ export type LogConfig = SharedConfig & {
     color: boolean;
 };
 
+/**
+ * Dynamically generated label.
+ * complexity: O(n)
+ */
+export type RuntimeLabel = {
+    /**
+     * Label length to be reserved for calculated answer
+     */
+    length: number;
+    /**
+     * Executed on log, value returned becomes label
+     */
+    calculate: () => string;
+};
+
+/**
+ * Pre generated label.
+ * complexity: O(1)
+ */
+export type StaticLabel = string;
+
 export type MethodConfig = SharedConfig & {
     /**
-     * The label used to prefix log messages
-     * Used for organization and sorting purposes
+     * The label used to prefix log messages.
+     * Used for organization and sorting purposes.
      * May contain ansi color codes!
      */
-    label:
-        | string
-        | {
-              length: number;
-              calculate: () => string;
-          };
+    label: StaticLabel | RuntimeLabel;
 };
 
 const pad = (
