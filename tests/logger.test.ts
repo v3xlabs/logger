@@ -13,7 +13,7 @@ describe("Basic Logging", () => {
                     label: chalk.greenBright`[OK]`,
                     newLine: "| ",
                     newLineEnd: `\\-`,
-                }
+                },
             },
             { padding: "PREPEND", color: false },
             logFn
@@ -45,7 +45,7 @@ describe("Objects & Arrays", () => {
     beforeAll(() => {
         logger = createLogger(
             {
-                ok: 'OK'
+                ok: "OK",
             },
             { color: false },
             logFn
@@ -79,8 +79,8 @@ describe("Prepend vs Append vs None", () => {
                 longer: "LONGER",
                 custom_short: {
                     label: "SHORT",
-                    paddingChar: "-"
-                }
+                    paddingChar: "-",
+                },
             },
             { padding: "PREPEND", color: false },
             logFn
@@ -91,8 +91,8 @@ describe("Prepend vs Append vs None", () => {
                 longer: "LONGER",
                 custom_short: {
                     label: "SHORT",
-                    paddingChar: "-"
-                }
+                    paddingChar: "-",
+                },
             },
             { padding: "APPEND", color: false },
             logFn
@@ -103,8 +103,8 @@ describe("Prepend vs Append vs None", () => {
                 longer: "LONGER",
                 custom_short: {
                     label: "SHORT",
-                    paddingChar: "-"
-                }
+                    paddingChar: "-",
+                },
             },
             { padding: "NONE", color: false },
             logFn
@@ -209,9 +209,7 @@ describe("Default values", () => {
 
     it("should log", () => {
         logger.default("Hello world");
-        expect(consoleLog).toBeCalledWith(
-            "OK Hello world"
-        );
+        expect(consoleLog).toBeCalledWith("OK Hello world");
     });
 });
 
@@ -243,20 +241,69 @@ describe("Custom divider", () => {
     });
 
     it("should use default divider", () => {
-        logger.foo(
-            "This is a cool logging library",
-        );
+        logger.foo("This is a cool logging library");
         expect(logFn).toBeCalledWith(
             `${chalk.greenBright`[FOO]`} This is a cool logging library`
         );
     });
 
     it("should use custom divider", () => {
-        logger.bar(
-            "This is even cooler",
-        );
+        logger.bar("This is even cooler");
         expect(logFn).toBeCalledWith(
             `${chalk.redBright`[BAR]`} | This is even cooler`
+        );
+    });
+});
+
+describe("Runtime Label", () => {
+    let logger: Logger<"foo" | "bar">;
+
+    beforeAll(() => {
+        logger = createLogger(
+            {
+                foo: {
+                    label: {
+                        length: 10,
+                        calculate: () => {
+                            return chalk.greenBright(
+                                "[" +
+                                    new Date("apr 20 1889")
+                                        .toTimeString()
+                                        .substring(0, 8) +
+                                    "]"
+                            );
+                        },
+                    },
+                    newLine: "| ",
+                    newLineEnd: `\\-`,
+                },
+                bar: {
+                    label: chalk.redBright`[BAR]`,
+                    newLine: "| ",
+                    newLineEnd: `\\-`,
+                    divider: " | ",
+                },
+            },
+            { padding: "PREPEND", color: false },
+            logFn
+        );
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it("should use runtime generated label", () => {
+        logger.foo("This is a cool logging library");
+        expect(logFn).toBeCalledWith(
+            `${chalk.greenBright`[00:00:00]`} This is a cool logging library`
+        );
+    });
+
+    it("should use predefined label", () => {
+        logger.bar("This is even cooler");
+        expect(logFn).toBeCalledWith(
+            `     ${chalk.redBright`[BAR]`} | This is even cooler`
         );
     });
 });
