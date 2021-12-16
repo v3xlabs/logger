@@ -293,14 +293,14 @@ describe("Runtime Label", () => {
         jest.clearAllMocks();
     });
 
-    it("should use default divider", () => {
+    it("should use runtime generated label", () => {
         logger.foo("This is a cool logging library");
         expect(logFn).toBeCalledWith(
             `${chalk.greenBright`[00:00:00]`} This is a cool logging library`
         );
     });
 
-    it("should use custom divider", () => {
+    it("should use predefined label", () => {
         logger.bar("This is even cooler");
         expect(logFn).toBeCalledWith(
             `     ${chalk.redBright`[BAR]`} | This is even cooler`
