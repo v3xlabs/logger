@@ -17,46 +17,7 @@ export type Logger<K extends string> = {
 
 export type PadType = "PREPEND" | "APPEND" | "NONE";
 
-export type LogConfig = {
-    /**
-     * Wether to add spacing in front or behind the specified label
-     * @default "PREPEND"
-     */
-    padding: PadType;
-    /**
-     * The character used to pad
-     * @default " "
-     */
-    paddingChar: string;
-    /**
-     * The divider between the label and the payload
-     * @default " "
-     */
-    divider: string;
-    /**
-     * The character to be used when a line needs to be broken
-     * @default "├-"
-     */
-    newLine: string;
-    /**
-     * The character to be used when the last line needs to be broken
-     * @default "└-"
-     */
-    newLineEnd: string;
-    /**
-     * Util.inspect color highlighting
-     * @default true
-     */
-    color: boolean;
-};
-
-export type MethodConfig = {
-    /**
-     * The label used to prefix log messages
-     * Used for organization and sorting purposes
-     * May contain ansi color codes!
-     */
-    label: string;
+export type SharedConfig = {
     /**
      * The character to be used when a line needs to be broken
      * This overrides any value set by the logger
@@ -80,6 +41,28 @@ export type MethodConfig = {
      * @default " "
      */
     paddingChar?: string;
+}
+
+export type LogConfig = SharedConfig & {
+    /**
+     * Wether to add spacing in front or behind the specified label
+     * @default "PREPEND"
+     */
+    padding: PadType;
+    /**
+     * Util.inspect color highlighting
+     * @default true
+     */
+    color: boolean;
+};
+
+export type MethodConfig = SharedConfig & {
+    /**
+     * The label used to prefix log messages
+     * Used for organization and sorting purposes
+     * May contain ansi color codes!
+     */
+    label: string;
 };
 
 const pad = (
