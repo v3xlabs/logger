@@ -41,7 +41,7 @@ export type SharedConfig = {
      * @default " "
      */
     paddingChar?: string;
-}
+};
 
 export type LogConfig = SharedConfig & {
     /**
@@ -62,7 +62,12 @@ export type MethodConfig = SharedConfig & {
      * Used for organization and sorting purposes
      * May contain ansi color codes!
      */
-    label: string;
+    label:
+        | string
+        | {
+              length: number;
+              calculate: () => string;
+          };
 };
 
 const pad = (
@@ -144,8 +149,11 @@ export const createLogger = <A extends string>(
 
     // Calculate the max length
     const maxLength = Math.max(
-        ...Object.values(completeMethods).map(
-            (a) => stripAnsi((a as Required<MethodConfig>).label).length
+        ...(Object.values(completeMethods) as Required<MethodConfig>[]).map(
+            (a) =>
+                typeof a.label === "string"
+                    ? stripAnsi(a.label).length
+                    : a.label.length
         )
     );
 
@@ -155,12 +163,14 @@ export const createLogger = <A extends string>(
             const method = completeMethods[methodHandle as A];
 
             const [paddedText, newLinePadding, newLineEndPadding] = [
-                pad(
-                    method.label,
-                    maxLength,
-                    completeConfig.padding,
-                    method.paddingChar
-                ),
+                typeof method.label === "string"
+                    ? pad(
+                          method.label,
+                          maxLength,
+                          completeConfig.padding,
+                          method.paddingChar
+                      )
+                    : "",
                 pad(
                     method.newLine,
                     maxLength,
@@ -195,7 +205,14 @@ export const createLogger = <A extends string>(
                             .map(
                                 (value, index, array) =>
                                     (index == 0
-                                        ? paddedText + method.divider
+                                        ? (typeof method.label === "string"
+                                              ? paddedText
+                                              : pad(
+                                                    method.label.calculate(),
+                                                    maxLength,
+                                                    completeConfig.padding,
+                                                    method.paddingChar
+                                                )) + method.divider
                                         : (array.length - 1 == index
                                               ? newLineEndPadding
                                               : newLinePadding) +
