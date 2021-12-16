@@ -14,9 +14,10 @@
 
 - [Installation](#installation)
 - [Usage](#usage)
-  - [example](#usage) (To get you going)
+  - [examples](#usage) (To get you going)
   - [LoggerConfig](#loggerconfig) (Customization for the entire logger)
   - [MethodConfig](#methodconfig) (Customization on a per-method basis)
+  - [Shimming console.log](#shimming-console.log)
 
 ## Installation
 
@@ -91,6 +92,25 @@ This section is still work in progress.
 ### MethodConfig
 
 This section is still work in progress.
+
+### Shimming `console.log`
+
+Do you still type `console.log` out of habit? Not a problem, simply run `shimLog` with your logger, and your log function of choice and voila.
+Now every stray `console.log` will be on steroids from now on!
+
+```typescript
+import { createLogger, shimLog } from '@lvksh/logger';
+import chalk from 'chalk';
+
+const log = createLogger(
+    {
+        debug: chalk.magentaBright`[DEBUG]`,
+    }
+);
+
+// Replaces `console.log` with `log.debug` !
+shimLog(log, 'debug');
+```
 
 ## Contributors
 [![](https://contrib.rocks/image?repo=lvkdotsh/logger)](https://github.com/lvkdotsh/logger/graphs/contributors)

@@ -225,3 +225,9 @@ export const createLogger = <A extends string>(
         })
     ) as Logger<A>;
 };
+
+export const shimLog = <A extends string>(logger: Logger<A>, func: A) => {
+    Object.defineProperty(console, 'log', {
+        value: logger[func]
+    });
+};
