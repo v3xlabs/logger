@@ -73,6 +73,17 @@ Which produces the following result
     <img src="./assets/example.png" />
 </center>
 
+Other Themes:
+
+<center>
+    <a href="https://github.com/lvkdotsh/logger/blob/master/examples/DeepDark.ts"><img src="./assets/deepdarklogexample.png"></a>
+</center>
+
+
+<center>
+    <a href="https://github.com/lvkdotsh/logger/blob/master/examples/Sunfire.ts"><img src="./assets/sunfireexamplelog.png"></a>
+</center>
+
 ### LoggerConfig
 
 This section is still work in progress.
