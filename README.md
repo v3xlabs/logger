@@ -76,7 +76,7 @@ Which produces the following result
 Other Themes:
 
 <center>
-    <a href="https://github.com/lvkdotsh/logger/tree/master/examples/DeepDark.ts"><img src="./assets/deepdarklogexample.png"></a>
+    <a href="https://github.com/lvkdotsh/logger/blob/master/examples/DeepDark.ts"><img src="./assets/deepdarklogexample.png"></a>
 </center>
 
 
