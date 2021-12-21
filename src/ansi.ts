@@ -4,4 +4,4 @@ const ansi = new RegExp(
     'g'
 );
 
-export const stripAnsi = (input: string) => input.replace(ansi, "");
+export const stripAnsi = (input: string) => input.replace(ansi, '');
