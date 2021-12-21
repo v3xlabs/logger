@@ -98,29 +98,29 @@ Do you still type `console.log` out of habit? Not a problem, simply run `shimLog
 Now every stray `console.log` will be on steroids from now on!
 
 ```typescript
-import { createLogger, shimLog } from "@lvksh/logger";
-import chalk from "chalk";
+import { createLogger, shimLog } from '@lvksh/logger';
+import chalk from 'chalk';
 
 const log = createLogger({
   debug: chalk.magentaBright`[DEBUG]`,
 });
 
 // Replaces `console.log` with `log.debug` !
-shimLog(log, "debug");
+shimLog(log, 'debug');
 ```
 
 ### File Logging
 
 ```typescript
-import { join } from "path";
+import { join } from 'path';
 
-import { fileLogger } from "../src/FileLog";
+import { fileLogger } from '../src/FileLog';
 
 fileLogger({
-  mode: "NEW_FILE",
-  path: join(__dirname, "logs"),
-  namePattern: "test.txt",
-})("Input to write to file");
+  mode: 'NEW_FILE',
+  path: join(__dirname, 'logs'),
+  namePattern: 'test.txt',
+})('Input to write to file');
 ```
 
 ## Contributors
