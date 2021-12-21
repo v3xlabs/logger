@@ -49,6 +49,19 @@ export type LogConfig = SharedConfig & {
      * @default true
      */
     color: boolean;
+    /**
+     * List of tags to be ignored
+     * @default [] (empty array)
+     * @example ['debug'] (ignores all debug messages)
+     */
+    exclude: string[];
+    /**
+     * List of tags to only log
+     * If defined overrides `exclude`
+     * @default undefined
+     * @example ['error', 'important', 'success'] (only logs error, important, and success)
+     */
+    filter: string[] | undefined;
 };
 
 /**
@@ -79,6 +92,12 @@ export type MethodConfig = SharedConfig & {
      * May contain ansi color codes!
      */
     label: StaticLabel | RuntimeLabel;
+    /**
+     * An array of tags to be used for filtering
+     * @default ['default']
+     * @example ['default', 'debug']
+     */
+    tags?: string[];
 };
 
 const pad = (
@@ -115,7 +134,7 @@ export const createLogger = <A extends string>(
 ) => {
     let functions: GenericLogFunction[] = Array.isArray(func) ? func : [func];
 
-    // Fill default values incase not overriden by arg
+    // Fill default values incase not overridden by arg
     const completeConfig: LogConfig = {
         ...{
             divider: ' ',
@@ -124,6 +143,8 @@ export const createLogger = <A extends string>(
             padding: 'PREPEND',
             paddingChar: ' ',
             color: true,
+            exclude: [],
+            filter: undefined,
         },
         ...config,
     };
@@ -135,6 +156,7 @@ export const createLogger = <A extends string>(
         newLineEnd: completeConfig.newLineEnd,
         divider: completeConfig.divider,
         paddingChar: completeConfig.paddingChar,
+        tags: ['default'],
     };
 
     // Convert all string methods to MethodConfig
@@ -177,6 +199,23 @@ export const createLogger = <A extends string>(
         {},
         ...Object.keys(completeMethods).map((methodHandle) => {
             const method = completeMethods[methodHandle as A];
+
+            const shouldBeFiltered =
+                completeConfig.filter && completeConfig.filter !== undefined
+                    ? !method.tags.some((r) =>
+                        (completeConfig.filter as string[]).includes(r)
+                    )
+                    : method.tags.some((r) =>
+                        completeConfig.exclude.includes(r)
+                    );
+
+            if (shouldBeFiltered) {
+                return {
+                    [methodHandle]: (...s: LogMethodInput[]) => {
+                        // Disabled Logger.
+                    },
+                };
+            }
 
             const [paddedText, newLinePadding, newLineEndPadding] = [
                 typeof method.label === 'string'
