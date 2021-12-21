@@ -49,40 +49,42 @@ describe('Prepend vs Append vs None', () => {
         jest.clearAllMocks();
     });
 
+    const helloMessage = 'Hello world';
+
     it('should prepend short', () => {
-        loggerPrepend.short('Hello world');
+        loggerPrepend.short(helloMessage);
         expect(logFn).toBeCalledWith(' SHORT Hello world');
     });
     it('should append short', () => {
-        loggerAppend.short('Hello world');
+        loggerAppend.short(helloMessage);
         expect(logFn).toBeCalledWith('SHORT  Hello world');
     });
     it('should none short', () => {
-        loggerNone.short('Hello world');
+        loggerNone.short(helloMessage);
         expect(logFn).toBeCalledWith('SHORT Hello world');
     });
     it('should prepend short', () => {
-        loggerPrepend.short('Hello world');
+        loggerPrepend.short(helloMessage);
         expect(logFn).toBeCalledWith(' SHORT Hello world');
     });
     it('should append short', () => {
-        loggerAppend.short('Hello world');
+        loggerAppend.short(helloMessage);
         expect(logFn).toBeCalledWith('SHORT  Hello world');
     });
     it('should none short', () => {
-        loggerNone.short('Hello world');
+        loggerNone.short(helloMessage);
         expect(logFn).toBeCalledWith('SHORT Hello world');
     });
     it('should prepend custom padding short', () => {
-        loggerPrepend.custom_short('Hello world');
+        loggerPrepend.custom_short(helloMessage);
         expect(logFn).toBeCalledWith('-SHORT Hello world');
     });
     it('should append custom padding short', () => {
-        loggerAppend.custom_short('Hello world');
+        loggerAppend.custom_short(helloMessage);
         expect(logFn).toBeCalledWith('SHORT- Hello world');
     });
     it('should none custom padding short', () => {
-        loggerNone.custom_short('Hello world');
+        loggerNone.custom_short(helloMessage);
         expect(logFn).toBeCalledWith('SHORT Hello world');
     });
 });

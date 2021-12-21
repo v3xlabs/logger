@@ -16,7 +16,7 @@ type FileLoggerConfigAppend = {
     path: string;
 };
 
-export const fileLogger = (config: FileLoggerConfig) => {
+export const FileLogger = (config: FileLoggerConfig) => {
     let path = config.path;
 
     // If we are creating a new file generate the file name

@@ -1,9 +1,10 @@
-import { fileLogger } from '../src/FileLog';
 import fs from 'fs';
+
+import { FileLogger } from '../src/FileLog';
 
 describe('Raw Execution', () => {
     it('writes to an outside file', async () => {
-        fileLogger({
+        FileLogger({
             mode: 'NEW_FILE',
             namePattern: 'test', //'dd-mm-yyyy',
             path: 'logs/1',
@@ -25,7 +26,7 @@ describe('FS Creation', () => {
     });
 
     it('creates the folder if not exists', async () => {
-        fileLogger({
+        FileLogger({
             mode: 'NEW_FILE',
             namePattern: 'test',
             path: 'logs/2',
