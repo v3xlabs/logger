@@ -1,4 +1,16 @@
 import { inspect } from "util";
+import fs from 'fs';
+
+
+
+
+
+
+
+
+
+
+
 
 const ansi = new RegExp(
     "[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)|(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))",
@@ -181,11 +193,11 @@ export const createLogger = <A extends string>(
             const [paddedText, newLinePadding, newLineEndPadding] = [
                 typeof method.label === "string"
                     ? pad(
-                          method.label,
-                          maxLength,
-                          completeConfig.padding,
-                          method.paddingChar
-                      )
+                        method.label,
+                        maxLength,
+                        completeConfig.padding,
+                        method.paddingChar
+                    )
                     : "",
                 pad(
                     method.newLine,
@@ -222,17 +234,17 @@ export const createLogger = <A extends string>(
                                 (value, index, array) =>
                                     (index == 0
                                         ? (typeof method.label === "string"
-                                              ? paddedText
-                                              : pad(
-                                                    method.label.calculate(),
-                                                    maxLength,
-                                                    completeConfig.padding,
-                                                    method.paddingChar
-                                                )) + method.divider
+                                            ? paddedText
+                                            : pad(
+                                                method.label.calculate(),
+                                                maxLength,
+                                                completeConfig.padding,
+                                                method.paddingChar
+                                            )) + method.divider
                                         : (array.length - 1 == index
-                                              ? newLineEndPadding
-                                              : newLinePadding) +
-                                          method.divider) + value
+                                            ? newLineEndPadding
+                                            : newLinePadding) +
+                                        method.divider) + value
                             )
                             .join("\n")
                     );
@@ -247,3 +259,25 @@ export const shimLog = <A extends string>(logger: Logger<A>, func: A) => {
         value: logger[func]
     });
 };
+
+
+// const logFile = (filename: string, logData: string[]) => {
+//     let stream = fs.createWriteStream(new Date().toDateString() + `_${filename}.txt`);
+//     stream.once('open', (fd) => {
+//         logData.map(log => stream.write(log + '\n'));
+//         stream.end();
+//     });
+// }
+
+
+export const fileLogger = (filename: string) => {
+    return ((...input: LogMethodInput[]) => {
+        let filePath = './log/' + /*new Date().toDateString() +*/ `_${filename}.txt`;
+        let stream = fs.createWriteStream(filePath);
+        stream.once('open', (fd) => {
+            stream.write(input[0] + '\n');
+            process.on('exit', () => stream.end());
+        });
+    }) as LogMethod
+}
+

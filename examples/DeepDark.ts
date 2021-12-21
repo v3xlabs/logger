@@ -32,7 +32,7 @@ const log = createLogger(
             newLineEnd: chalk.blue.bold`┗━`,
         },
         test: {
-            label: chalk.white`<TEST>:` + new Date().toLocaleTimeString().replace(/(AM|PM)/, "",).trim(),
+            label: () => { return chalk.white`<TEST>:` + new Date().toLocaleTimeString().replace(/(AM|PM)/, "",).trim() },
             paddingChar: "-",
             divider: chalk.white.bold`|`,
             newLine: chalk.white.bold`┣━`,
