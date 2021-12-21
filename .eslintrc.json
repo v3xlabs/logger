@@ -1,0 +1,45 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2021
+    },
+    "extends": [
+        "plugin:radar/recommended",
+        "eslint:recommended",
+        "eslint:recommended"
+    ],
+    "ignorePatterns": ["!**/*"],
+    "plugins": [
+        "simple-import-sort",
+        "radar",
+        "unicorn",
+        "jest"
+    ],
+    "env": {
+        "node": true,
+        "jest/globals": true
+    },
+    "rules": {
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"],
+        "linebreak-style": ["error", "unix"],
+        "indent": ["error", 4],
+        "unicorn/prefer-spread": "off",
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
+        "no-unused-vars": "off",
+        "padding-line-between-statements": [
+            "error",
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": ["return", "if", "switch", "try"]
+            },
+            {
+                "blankLine": "always",
+                "prev": ["if", "switch", "try"],
+                "next": "*"
+            }
+        ]
+    }
+}
