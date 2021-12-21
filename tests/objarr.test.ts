@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+
 import { createLogger, Logger, shimLog } from '../src';
 
 const logFn = jest.fn();
@@ -22,11 +23,11 @@ describe('Objects & Arrays', () => {
 
     it('can log objects', () => {
         logger.ok({ hello: 'world' });
-        expect(logFn).toBeCalledWith("OK { hello: 'world' }");
+        expect(logFn).toBeCalledWith('OK { hello: \'world\' }');
     });
 
     it('can log arrays', () => {
         logger.ok(['hello', 'world']);
-        expect(logFn).toBeCalledWith("OK [ 'hello', 'world' ]");
+        expect(logFn).toBeCalledWith('OK [ \'hello\', \'world\' ]');
     });
 });

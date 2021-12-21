@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+
 import { createLogger, Logger, shimLog } from '../src';
 
 const logFn = jest.fn();
@@ -23,12 +24,12 @@ describe('Runtime Label', () => {
                         },
                     },
                     newLine: '| ',
-                    newLineEnd: `\\-`,
+                    newLineEnd: '\\-',
                 },
                 bar: {
                     label: chalk.redBright`[BAR]`,
                     newLine: '| ',
-                    newLineEnd: `\\-`,
+                    newLineEnd: '\\-',
                     divider: ' | ',
                 },
             },
@@ -44,14 +45,14 @@ describe('Runtime Label', () => {
     it('should use runtime generated label', () => {
         logger.foo('This is a cool logging library');
         expect(logFn).toBeCalledWith(
-            `${chalk.greenBright`[00:00:00]`} This is a cool logging library`
+            `${chalk.greenBright('[00:00:00]')} This is a cool logging library`
         );
     });
 
     it('should use predefined label', () => {
         logger.bar('This is even cooler');
         expect(logFn).toBeCalledWith(
-            `     ${chalk.redBright`[BAR]`} | This is even cooler`
+            `     ${chalk.redBright('[BAR]')} | This is even cooler`
         );
     });
 });

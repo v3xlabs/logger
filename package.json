@@ -23,7 +23,7 @@
         "debug": "yarn build && node ./test/index.js",
         "pub": "yarn build && yarn publish --access public",
         "test": "jest --verbose --coverage",
-        "lint": "eslint -c .eslintrc.json --ext .ts ./src"
+        "lint": "eslint -c .eslintrc.json --ext .ts ./src ./tests"
     },
     "devDependencies": {
         "@types/jest": "^27.0.3",
