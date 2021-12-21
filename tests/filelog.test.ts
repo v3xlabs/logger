@@ -1,17 +1,38 @@
-import chalk from "chalk";
-import { createLogger, Logger, shimLog, fileLogger } from "../src";
-import fs from 'fs';
-import path from 'path'
+import { fileLogger } from "../src/FileLog";
+import fs from "fs";
 
-function checkFileExists(file: any) {
-    return fs.promises.access(file, fs.constants.F_OK)
-        .then(() => true)
-        .catch(() => false)
-}
-const logFn = jest.fn();
+describe("Raw Execution", () => {
+    it("writes to an outside file", async () => {
+        fileLogger({
+            mode: "NEW_FILE",
+            namePattern: "test", //'dd-mm-yyyy',
+            path: "logs/1",
+        })("testing 123\nHello There!\n");
 
-it('writes to an outside file', () => {
-    fileLogger('test')("testing 123 \n Hello There! \n");
-    expect(checkFileExists('_test.txt')).toBeTruthy();
+        setImmediate(async () => {
+            expect(await fs.promises.readFile("logs/1/test", "utf-8")).toEqual(
+                "testing 123\nHello There!\n\n"
+            );
+        });
+    });
+});
 
-})
+describe("FS Creation", () => {
+    beforeEach(async () => {
+        if (fs.existsSync("logs/2")) {
+            await fs.promises.rm("logs/2", { recursive: true });
+        }
+    });
+
+    it("creates the folder if not exists", async () => {
+        fileLogger({
+            mode: "NEW_FILE",
+            namePattern: "test",
+            path: "logs/2",
+        })("");
+        
+        setImmediate(async () => {
+            expect(await fs.promises.readFile("logs/2/test", "utf-8"));
+        });
+    });
+});
