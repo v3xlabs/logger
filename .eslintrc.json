@@ -4,14 +4,14 @@
         "ecmaVersion": 2021
     },
     "extends": [
-        "plugin:radar/recommended",
+        "plugin:sonarjs/recommended",
         "eslint:recommended",
         "eslint:recommended"
     ],
     "ignorePatterns": ["!**/*"],
     "plugins": [
         "simple-import-sort",
-        "radar",
+        "sonarjs",
         "unicorn",
         "jest"
     ],
@@ -28,6 +28,7 @@
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error",
         "no-unused-vars": "off",
+        "sonarjs/cognitive-complexity": "off",
         "padding-line-between-statements": [
             "error",
             {
