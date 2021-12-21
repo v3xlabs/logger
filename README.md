@@ -12,12 +12,12 @@
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Usage](#usage)
-  - [examples](#usage) (To get you going)
-  - [LoggerConfig](#loggerconfig) (Customization for the entire logger)
-  - [MethodConfig](#methodconfig) (Customization on a per-method basis)
-  - [Shimming console.log](#shimming-console.log)
+-   [Installation](#installation)
+-   [Usage](#usage)
+    -   [examples](#usage) (To get you going)
+    -   [LoggerConfig](#loggerconfig) (Customization for the entire logger)
+    -   [MethodConfig](#methodconfig) (Customization on a per-method basis)
+    -   [Shimming console.log](#shimming-console.log)
 
 ## Installation
 
@@ -43,7 +43,11 @@ import chalk from 'chalk';
 
 const log = createLogger(
     {
-        ok: {label: chalk.greenBright`[OK]`,newLine: '| ', newLineEnd: '\\-'},
+        ok: {
+            label: chalk.greenBright`[OK]`,
+            newLine: '| ',
+            newLineEnd: '\\-',
+        },
         debug: chalk.magentaBright`[DEBUG]`,
         info: {
             label: chalk.cyan`[INFO]`,
@@ -52,7 +56,7 @@ const log = createLogger(
         },
         veryBigNetworkError: chalk.bgRed.white.bold`[NETWORK]`,
     },
-    { padding: "PREPEND"},
+    { padding: 'PREPEND' },
     console.log
 );
 ```
@@ -60,12 +64,12 @@ const log = createLogger(
 And now log to your hearts content
 
 ```ts
-log.ok("This is the best logging", "library", "you");
-log.info("will probably");
-log.debug("ever use");
+log.ok('This is the best logging', 'library', 'you');
+log.info('will probably');
+log.debug('ever use');
 log.veryBigNetworkError`Never Gonna Give You Up!`;
-log.debug("in", "your", "life", "you're", "welcome");
-log.info("item 1", "item 2", "item 3", "item 4", "item 5");
+log.debug('in', 'your', 'life', "you're", 'welcome');
+log.info('item 1', 'item 2', 'item 3', 'item 4', 'item 5');
 ```
 
 Which produces the following result
@@ -79,7 +83,6 @@ Other Themes:
 <center>
     <a href="https://github.com/lvkdotsh/logger/blob/master/examples/DeepDark.ts"><img src="./assets/deepdarklogexample.png"></a>
 </center>
-
 
 <center>
     <a href="https://github.com/lvkdotsh/logger/blob/master/examples/Sunfire.ts"><img src="./assets/sunfireexamplelog.png"></a>
@@ -102,17 +105,16 @@ Now every stray `console.log` will be on steroids from now on!
 import { createLogger, shimLog } from '@lvksh/logger';
 import chalk from 'chalk';
 
-const log = createLogger(
-    {
-        debug: chalk.magentaBright`[DEBUG]`,
-    }
-);
+const log = createLogger({
+    debug: chalk.magentaBright`[DEBUG]`,
+});
 
 // Replaces `console.log` with `log.debug` !
 shimLog(log, 'debug');
 ```
 
 ## Contributors
+
 [![](https://contrib.rocks/image?repo=lvkdotsh/logger)](https://github.com/lvkdotsh/logger/graphs/contributors)
 
 ## LICENSE

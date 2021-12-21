@@ -1,17 +1,17 @@
-import { createLogger } from "@lvksh/logger";
-import chalk from "chalk";
-""
+import { createLogger } from '@lvksh/logger';
+import chalk from 'chalk';
+('');
 
 const log = createLogger(
     {
         server: chalk.gray`[SERVER]`,
         client: {
-            label: "{" + chalk.yellowBright`\{CLIENT\}` + "}",
+            label: '{' + chalk.yellowBright`\{CLIENT\}` + '}',
             newLine: chalk.yellowBright.bold`┣━`,
             newLineEnd: chalk.yellow.bold`┗━`,
         },
         middleware: {
-            label: "=[" + chalk.bgBlue.white`MIDDLE` + "]=",
+            label: '=[' + chalk.bgBlue.white`MIDDLE` + ']=',
             paddingChar: chalk.red.bold`━`,
             divider: chalk.red.bold`|`,
             newLine: chalk.red.bold`┣━`,
@@ -24,15 +24,15 @@ const log = createLogger(
             newLine: chalk.magenta.bold`|`,
             newLineEnd: chalk.magenta.bold`\\`,
         },
-        error:{
-            label: "ERROR!",
-        }
+        error: {
+            label: 'ERROR!',
+        },
     },
-    { padding: "APPEND", divider: chalk.greenBright`>`, paddingChar: ":" },
+    { padding: 'APPEND', divider: chalk.greenBright`>`, paddingChar: ':' }
 );
 
-log.server("Serving /hello");
-log.client("Fetching user 01", "with extra info", "hello");
-log.middleware("Succesful connection", "Continuing cycle", "Cycle complete")
-log.services("Test log", "Testing Now...", "Testing succesful");
-log.error("BIG ERROR OOF ASTLEY WAS HERE", "hello", "world");
+log.server('Serving /hello');
+log.client('Fetching user 01', 'with extra info', 'hello');
+log.middleware('Succesful connection', 'Continuing cycle', 'Cycle complete');
+log.services('Test log', 'Testing Now...', 'Testing succesful');
+log.error('BIG ERROR OOF ASTLEY WAS HERE', 'hello', 'world');

@@ -1,21 +1,21 @@
 name: Node.js Package
 on:
-  release:
-    types: [created]
+    release:
+        types: [created]
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '12.x'
-          registry-url: 'https://registry.npmjs.org'
-      - run: yarn
-      - name: Build
-        run: yarn build
-      - name: Version
-        run: yarn version --new-version "${GITHUB_REF:11}" --no-git-tag-version
-      - run: yarn pub
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: '12.x'
+                  registry-url: 'https://registry.npmjs.org'
+            - run: yarn
+            - name: Build
+              run: yarn build
+            - name: Version
+              run: yarn version --new-version "${GITHUB_REF:11}" --no-git-tag-version
+            - run: yarn pub
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

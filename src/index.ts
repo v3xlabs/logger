@@ -1,11 +1,11 @@
-import { inspect } from "util";
+import { inspect } from 'util';
 
 const ansi = new RegExp(
-    "[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)|(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))",
-    "g"
+    '[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)|(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))',
+    'g'
 );
 
-export const stripAnsi = (input: string) => input.replace(ansi, "");
+export const stripAnsi = (input: string) => input.replace(ansi, '');
 
 export type LogMethodInput = string | object;
 
@@ -15,7 +15,7 @@ export type Logger<K extends string> = {
     [a in K]: LogMethod;
 };
 
-export type PadType = "PREPEND" | "APPEND" | "NONE";
+export type PadType = 'PREPEND' | 'APPEND' | 'NONE';
 
 export type SharedConfig = {
     /**
@@ -92,14 +92,14 @@ const pad = (
     paddingStrategy: PadType,
     paddingChar: string
 ) => {
-    if (paddingStrategy === "NONE") return text;
+    if (paddingStrategy === 'NONE') return text;
 
     const calculatedPadding = paddingChar.repeat(
-        "".padStart(length - stripAnsi(text).length, " ").length
+        ''.padStart(length - stripAnsi(text).length, ' ').length
     );
 
-    if (paddingStrategy === "APPEND") return text + calculatedPadding;
-    if (paddingStrategy === "PREPEND") return calculatedPadding + text;
+    if (paddingStrategy === 'APPEND') return text + calculatedPadding;
+    if (paddingStrategy === 'PREPEND') return calculatedPadding + text;
 };
 
 /**
@@ -118,11 +118,11 @@ export const createLogger = <A extends string>(
     // Fill default values incase not overriden by arg
     const completeConfig: LogConfig = {
         ...{
-            divider: " ",
-            newLine: "├-",
-            newLineEnd: "└-",
-            padding: "PREPEND",
-            paddingChar: " ",
+            divider: ' ',
+            newLine: '├-',
+            newLineEnd: '└-',
+            padding: 'PREPEND',
+            paddingChar: ' ',
             color: true,
         },
         ...config,
@@ -130,7 +130,7 @@ export const createLogger = <A extends string>(
 
     // Infer the default method config
     const inferredMethodConfig: MethodConfig = {
-        label: "-",
+        label: '-',
         newLine: completeConfig.newLine,
         newLineEnd: completeConfig.newLineEnd,
         divider: completeConfig.divider,
@@ -141,7 +141,7 @@ export const createLogger = <A extends string>(
     const completeMethods: { [k in A]: Required<MethodConfig> } = Object.assign(
         {},
         ...(Object.keys(methods) as A[]).map((a) => {
-            if (typeof methods[a] == "string") {
+            if (typeof methods[a] == 'string') {
                 // Return an inferred MethodConfig
                 return {
                     [a]: {
@@ -167,7 +167,7 @@ export const createLogger = <A extends string>(
     const maxLength = Math.max(
         ...(Object.values(completeMethods) as Required<MethodConfig>[]).map(
             (a) =>
-                typeof a.label === "string"
+                typeof a.label === 'string'
                     ? stripAnsi(a.label).length
                     : a.label.length
         )
@@ -179,14 +179,14 @@ export const createLogger = <A extends string>(
             const method = completeMethods[methodHandle as A];
 
             const [paddedText, newLinePadding, newLineEndPadding] = [
-                typeof method.label === "string"
+                typeof method.label === 'string'
                     ? pad(
                           method.label,
                           maxLength,
                           completeConfig.padding,
                           method.paddingChar
                       )
-                    : "",
+                    : '',
                 pad(
                     method.newLine,
                     maxLength,
@@ -206,7 +206,7 @@ export const createLogger = <A extends string>(
                     func(
                         s
                             .map((value) => {
-                                if (typeof value !== "string") {
+                                if (typeof value !== 'string') {
                                     value = inspect(
                                         value,
                                         false,
@@ -216,12 +216,12 @@ export const createLogger = <A extends string>(
                                 }
                                 return value;
                             })
-                            .join("\n")
-                            .split("\n")
+                            .join('\n')
+                            .split('\n')
                             .map(
                                 (value, index, array) =>
                                     (index == 0
-                                        ? (typeof method.label === "string"
+                                        ? (typeof method.label === 'string'
                                               ? paddedText
                                               : pad(
                                                     method.label.calculate(),
@@ -234,7 +234,7 @@ export const createLogger = <A extends string>(
                                               : newLinePadding) +
                                           method.divider) + value
                             )
-                            .join("\n")
+                            .join('\n')
                     );
                 },
             };
@@ -243,7 +243,7 @@ export const createLogger = <A extends string>(
 };
 
 export const shimLog = <A extends string>(logger: Logger<A>, func: A) => {
-    Object.defineProperty(console, "log", {
+    Object.defineProperty(console, 'log', {
         value: logger[func],
     });
 };
