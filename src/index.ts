@@ -261,15 +261,6 @@ export const shimLog = <A extends string>(logger: Logger<A>, func: A) => {
 };
 
 
-// const logFile = (filename: string, logData: string[]) => {
-//     let stream = fs.createWriteStream(new Date().toDateString() + `_${filename}.txt`);
-//     stream.once('open', (fd) => {
-//         logData.map(log => stream.write(log + '\n'));
-//         stream.end();
-//     });
-// }
-
-
 export const fileLogger = (filename: string) => {
     return ((...input: LogMethodInput[]) => {
         let filePath = './log/' + /*new Date().toDateString() +*/ `_${filename}.txt`;
