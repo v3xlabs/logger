@@ -117,6 +117,6 @@ shimLog(log, 'debug');
 
 ## LICENSE
 
-This package is licensed under the MIT license.
+This package is licensed under the [GNU Lesser General Public License](https://www.gnu.org/licenses/lgpl-3.0).
 
-Regex matching within this package is sourced from [ansi-regex](https://github.com/chalk/ansi-regex), which is licensed under [MIT](https://github.com/chalk/ansi-regex/blob/main/license)
+Regex matching within this package is sourced from [ansi-regex](https://github.com/chalk/ansi-regex), which is licensed under the [MIT](https://github.com/chalk/ansi-regex/blob/main/license) license.
