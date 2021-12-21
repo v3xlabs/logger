@@ -3,7 +3,7 @@
   "description": "Zero dependency, light-weight, blazing fast customizable logging library.",
   "repository": "https://github.com/lvkdotsh/logger",
   "author": "lvksh",
-  "license": "MIT",
+  "license": "LGPL-3.0-or-later",
   "types": "./lib/index.d.ts",
   "main": "./lib/index.js",
   "files": [
