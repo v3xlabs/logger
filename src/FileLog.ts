@@ -1,5 +1,6 @@
 import { createWriteStream, existsSync, mkdirSync } from "fs";
 import { join, resolve } from "path";
+import { stripAnsi } from './ansi';
 
 export type FileLoggerConfig = FileLoggerConfigNew | FileLoggerConfigAppend;
 
@@ -38,6 +39,6 @@ export const fileLogger = (config: FileLoggerConfig) => {
 
     // Return the executable logging function
     return (input: string) => {
-        stream.write(input + "\n");
+        stream.write(stripAnsi(input) + "\n");
     };
 };
