@@ -113,7 +113,7 @@ const pad = (
 export const createLogger = <A extends string>(
     methods: { [k in A]: string | MethodConfig },
     config: Partial<LogConfig> = {},
-    func = console.log
+    func: (payload: string) => void = console.log
 ) => {
     // Fill default values incase not overriden by arg
     const completeConfig: LogConfig = {
@@ -243,7 +243,7 @@ export const createLogger = <A extends string>(
 };
 
 export const shimLog = <A extends string>(logger: Logger<A>, func: A) => {
-    Object.defineProperty(console, 'log', {
-        value: logger[func]
+    Object.defineProperty(console, "log", {
+        value: logger[func],
     });
 };

@@ -1,4 +1,5 @@
-node_modules
-yarn-error.log
+/coverage
 /lib
-coverage
+/logs
+/node_modules
+/yarn-error.log
