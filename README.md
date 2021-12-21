@@ -38,22 +38,22 @@ yarn add @lvksh/logger
 Get started by creating your logger
 
 ```ts
-import { createLogger } from '@lvksh/logger';
-import chalk from 'chalk';
+import { createLogger } from "@lvksh/logger";
+import chalk from "chalk";
 
 const log = createLogger(
-    {
-        ok: {label: chalk.greenBright`[OK]`,newLine: '| ', newLineEnd: '\\-'},
-        debug: chalk.magentaBright`[DEBUG]`,
-        info: {
-            label: chalk.cyan`[INFO]`,
-            newLine: chalk.cyan`⮡`,
-            newLineEnd: chalk.cyan`⮡`,
-        },
-        veryBigNetworkError: chalk.bgRed.white.bold`[NETWORK]`,
+  {
+    ok: { label: chalk.greenBright`[OK]`, newLine: "| ", newLineEnd: "\\-" },
+    debug: chalk.magentaBright`[DEBUG]`,
+    info: {
+      label: chalk.cyan`[INFO]`,
+      newLine: chalk.cyan`⮡`,
+      newLineEnd: chalk.cyan`⮡`,
     },
-    { padding: "PREPEND"},
-    console.log
+    veryBigNetworkError: chalk.bgRed.white.bold`[NETWORK]`,
+  },
+  { padding: "PREPEND" },
+  console.log
 );
 ```
 
@@ -80,7 +80,6 @@ Other Themes:
     <a href="https://github.com/lvkdotsh/logger/blob/master/examples/DeepDark.ts"><img src="./assets/deepdarklogexample.png"></a>
 </center>
 
-
 <center>
     <a href="https://github.com/lvkdotsh/logger/blob/master/examples/Sunfire.ts"><img src="./assets/sunfireexamplelog.png"></a>
 </center>
@@ -99,20 +98,33 @@ Do you still type `console.log` out of habit? Not a problem, simply run `shimLog
 Now every stray `console.log` will be on steroids from now on!
 
 ```typescript
-import { createLogger, shimLog } from '@lvksh/logger';
-import chalk from 'chalk';
+import { createLogger, shimLog } from "@lvksh/logger";
+import chalk from "chalk";
 
-const log = createLogger(
-    {
-        debug: chalk.magentaBright`[DEBUG]`,
-    }
-);
+const log = createLogger({
+  debug: chalk.magentaBright`[DEBUG]`,
+});
 
 // Replaces `console.log` with `log.debug` !
-shimLog(log, 'debug');
+shimLog(log, "debug");
+```
+
+### File Logging
+
+```typescript
+import { join } from "path";
+
+import { fileLogger } from "../src/FileLog";
+
+fileLogger({
+  mode: "NEW_FILE",
+  path: join(__dirname, "logs"),
+  namePattern: "test.txt",
+})("Input to write to file");
 ```
 
 ## Contributors
+
 [![](https://contrib.rocks/image?repo=lvkdotsh/logger)](https://github.com/lvkdotsh/logger/graphs/contributors)
 
 ## LICENSE
