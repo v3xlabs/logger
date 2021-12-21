@@ -1,9 +1,9 @@
-import chalk from "chalk";
-import { createLogger, Logger, shimLog } from "../src";
+import chalk from 'chalk';
+import { createLogger, Logger, shimLog } from '../src';
 const logFn = jest.fn();
 
-describe("Shim Log", () => {
-    let logger: Logger<"foo" | "bar">;
+describe('Shim Log', () => {
+    let logger: Logger<'foo' | 'bar'>;
 
     beforeAll(() => {
         logger = createLogger(
@@ -15,7 +15,7 @@ describe("Shim Log", () => {
                     label: chalk.redBright`[BAR]`,
                 },
             },
-            { padding: "PREPEND", color: false },
+            { padding: 'PREPEND', color: false },
             logFn
         );
     });
@@ -24,16 +24,12 @@ describe("Shim Log", () => {
         jest.clearAllMocks();
     });
 
-    it("should shim", () => {
+    it('should shim', () => {
         shimLog(logger, 'foo');
-        logger.foo("This is using it directly");
-        console.log("This is using it shimmed");
+        logger.foo('This is using it directly');
+        console.log('This is using it shimmed');
         expect(logFn).toBeCalledTimes(2);
-        expect(logFn).toBeCalledWith(
-            `[FOO] This is using it directly`
-        );
-        expect(logFn).toBeCalledWith(
-            `[FOO] This is using it shimmed`
-        );
+        expect(logFn).toBeCalledWith(`[FOO] This is using it directly`);
+        expect(logFn).toBeCalledWith(`[FOO] This is using it shimmed`);
     });
 });

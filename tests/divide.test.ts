@@ -1,27 +1,27 @@
-import chalk from "chalk";
-import { createLogger, Logger } from "../src";
+import chalk from 'chalk';
+import { createLogger, Logger } from '../src';
 
 const logFn = jest.fn();
 
-describe("Custom divider", () => {
-    let logger: Logger<"foo" | "bar">;
+describe('Custom divider', () => {
+    let logger: Logger<'foo' | 'bar'>;
 
     beforeAll(() => {
         logger = createLogger(
             {
                 foo: {
                     label: chalk.greenBright`[FOO]`,
-                    newLine: "| ",
+                    newLine: '| ',
                     newLineEnd: `\\-`,
                 },
                 bar: {
                     label: chalk.redBright`[BAR]`,
-                    newLine: "| ",
+                    newLine: '| ',
                     newLineEnd: `\\-`,
-                    divider: " | ",
+                    divider: ' | ',
                 },
             },
-            { padding: "PREPEND", color: false },
+            { padding: 'PREPEND', color: false },
             logFn
         );
     });
@@ -30,15 +30,15 @@ describe("Custom divider", () => {
         jest.clearAllMocks();
     });
 
-    it("should use default divider", () => {
-        logger.foo("This is a cool logging library");
+    it('should use default divider', () => {
+        logger.foo('This is a cool logging library');
         expect(logFn).toBeCalledWith(
             `${chalk.greenBright`[FOO]`} This is a cool logging library`
         );
     });
 
-    it("should use custom divider", () => {
-        logger.bar("This is even cooler");
+    it('should use custom divider', () => {
+        logger.bar('This is even cooler');
         expect(logFn).toBeCalledWith(
             `${chalk.redBright`[BAR]`} | This is even cooler`
         );

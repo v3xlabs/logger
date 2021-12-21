@@ -1,15 +1,15 @@
-import chalk from "chalk";
-import { createLogger, Logger, shimLog } from "../src";
+import chalk from 'chalk';
+import { createLogger, Logger, shimLog } from '../src';
 
 const logFn = jest.fn();
 
-describe("Objects & Arrays", () => {
-    let logger: Logger<"ok">;
+describe('Objects & Arrays', () => {
+    let logger: Logger<'ok'>;
 
     beforeAll(() => {
         logger = createLogger(
             {
-                ok: "OK",
+                ok: 'OK',
             },
             { color: false },
             logFn
@@ -20,13 +20,13 @@ describe("Objects & Arrays", () => {
         jest.clearAllMocks();
     });
 
-    it("can log objects", () => {
-        logger.ok({ hello: "world" });
+    it('can log objects', () => {
+        logger.ok({ hello: 'world' });
         expect(logFn).toBeCalledWith("OK { hello: 'world' }");
     });
 
-    it("can log arrays", () => {
-        logger.ok(["hello", "world"]);
+    it('can log arrays', () => {
+        logger.ok(['hello', 'world']);
         expect(logFn).toBeCalledWith("OK [ 'hello', 'world' ]");
     });
 });

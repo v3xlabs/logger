@@ -98,6 +98,8 @@ const pad = (
     if (paddingStrategy === 'PREPEND') return calculatedPadding + text;
 };
 
+type GenericLogFunction = (input: string) => void;
+
 /**
  * @name createLogger
  * Creates a logger with the specified methods and config
@@ -109,8 +111,10 @@ const pad = (
 export const createLogger = <A extends string>(
     methods: { [k in A]: string | MethodConfig },
     config: Partial<LogConfig> = {},
-    func: (payload: string) => void = console.log
+    func: GenericLogFunction | GenericLogFunction[] = console.log
 ) => {
+    let functions: GenericLogFunction[] = Array.isArray(func) ? func : [func];
+
     // Fill default values incase not overriden by arg
     const completeConfig: LogConfig = {
         ...{
@@ -199,40 +203,39 @@ export const createLogger = <A extends string>(
 
             return {
                 [methodHandle]: (...s: LogMethodInput[]) => {
-                    func(
-                        s
-                            .map((value) => {
-                                if (typeof value !== 'string') {
-                                    value = inspect(
-                                        value,
-                                        false,
-                                        3,
-                                        completeConfig.color
-                                    );
-                                }
+                    const value = s
+                        .map((value) => {
+                            if (typeof value !== 'string') {
+                                value = inspect(
+                                    value,
+                                    false,
+                                    3,
+                                    completeConfig.color
+                                );
+                            }
 
-                                return value;
-                            })
-                            .join('\n')
-                            .split('\n')
-                            .map(
-                                (value, index, array) =>
-                                    (index == 0
-                                        ? (typeof method.label === 'string'
-                                            ? paddedText
-                                            : pad(
-                                                method.label.calculate(),
-                                                maxLength,
-                                                completeConfig.padding,
-                                                method.paddingChar
-                                            )) + method.divider
-                                        : (array.length - 1 == index
-                                            ? newLineEndPadding
-                                            : newLinePadding) +
-                                          method.divider) + value
-                            )
-                            .join('\n')
-                    );
+                            return value;
+                        })
+                        .join('\n')
+                        .split('\n')
+                        .map(
+                            (value, index, array) =>
+                                (index == 0
+                                    ? (typeof method.label === 'string'
+                                        ? paddedText
+                                        : pad(
+                                            method.label.calculate(),
+                                            maxLength,
+                                            completeConfig.padding,
+                                            method.paddingChar
+                                        )) + method.divider
+                                    : (array.length - 1 == index
+                                        ? newLineEndPadding
+                                        : newLinePadding) + method.divider) +
+                                value
+                        )
+                        .join('\n');
+                    functions.forEach((a) => a(value));
                 },
             };
         })
