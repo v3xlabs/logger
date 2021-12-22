@@ -133,10 +133,10 @@ const log = createLogger(
     })
 );
 
-log.ok('Hello World');
+log.OK('Hello World');
 ```
 
-or for multi-logging:
+### Multi Logging
 
 ```typescript
 import { join } from 'path';
@@ -161,7 +161,7 @@ const log = createLogger(
 
 export default log;
 
-log.ok('Hello World');
+log.OK('Hello World');
 ```
 
 
