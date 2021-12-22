@@ -164,10 +164,6 @@ export default log;
 log.OK('Hello World');
 ```
 
-#### Note:
-Chalk is currently not compatible with multi-logging.
-
-
 
 ## Contributors
 
