@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 
-import { createLogger, Logger, shimLog } from '../src';
+import { createLogger, Logger } from '../src';
 
 const logFn = jest.fn();
 
