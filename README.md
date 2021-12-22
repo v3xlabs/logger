@@ -136,6 +136,38 @@ const log = createLogger(
 log.ok('Hello World');
 ```
 
+or for multi-logging:
+
+```typescript
+import { join } from 'path';
+import { createLogger } from '@lvksh/logger';
+import { FileLogger, FileLoggerConfig } from '@lvksh/logger/lib/FileLog';
+
+const fileConfig: FileLoggerConfig = {
+    mode: 'NEW_FILE',
+    path: join(__dirname, '../logs'),
+    namePattern: 'test.txt'
+}
+const methodConfig = {
+    OK: 'OK',
+    INFO: 'INFO'
+}
+
+const log = createLogger(
+    methodConfig,
+    { divider: ' | ' },
+    [FileLogger(fileConfig), console.log]
+);
+
+export default log;
+
+log.ok('Hello World');
+```
+
+
+
+
+
 ## Contributors
 
 [![](https://contrib.rocks/image?repo=lvkdotsh/logger)](https://github.com/lvkdotsh/logger/graphs/contributors)
