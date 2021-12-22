@@ -216,11 +216,11 @@ export const createLogger = <A extends string>(
             const [paddedText, newLinePadding, newLineEndPadding] = [
                 typeof method.label === 'string'
                     ? pad(
-                          method.label,
-                          maxLength,
-                          completeConfig.padding,
-                          method.paddingChar
-                      )
+                        method.label,
+                        maxLength,
+                        completeConfig.padding,
+                        method.paddingChar
+                    )
                     : '',
                 pad(
                     method.newLine,
@@ -247,8 +247,8 @@ export const createLogger = <A extends string>(
                     if (
                         filter && filter !== undefined
                             ? !method.tags.some((r) =>
-                                  (filter as string[]).includes(r)
-                              )
+                                (filter as string[]).includes(r)
+                            )
                             : method.tags.some((r) => exclude.includes(r))
                     )
                         return;
@@ -273,16 +273,16 @@ export const createLogger = <A extends string>(
                             (value, index, array) =>
                                 (index == 0
                                     ? (typeof method.label === 'string'
-                                          ? paddedText
-                                          : pad(
-                                                method.label.calculate(),
-                                                maxLength,
-                                                completeConfig.padding,
-                                                method.paddingChar
-                                            )) + method.divider
+                                        ? paddedText
+                                        : pad(
+                                            method.label.calculate(),
+                                            maxLength,
+                                            completeConfig.padding,
+                                            method.paddingChar
+                                        )) + method.divider
                                     : (array.length - 1 == index
-                                          ? newLineEndPadding
-                                          : newLinePadding) + method.divider) +
+                                        ? newLineEndPadding
+                                        : newLinePadding) + method.divider) +
                                 value
                         )
                         .join('\n');

@@ -96,31 +96,6 @@ describe('Runtime Filter & Exclude', () => {
         jest.clearAllMocks();
     });
 
-    it('should log default', () => {
-        logger = createLogger(
-            {
-                info: {
-                    label: chalk.greenBright`[OK]`, 
-                },
-                error: {
-                    label: chalk.redBright`[ERROR]`,
-                    tags: ['prod'],
-                },
-                debug: {
-                    label: chalk.blueBright`[DEBUG]`,
-                    tags: ['debug'],
-                }
-            },
-            { padding: 'PREPEND', color: false},
-            logFn
-        );
-
-        logger.info('info');
-        expect(logFn).toBeCalledWith(
-            `   ${chalk.greenBright('[OK]')} info`
-        );
-    });
-
     it('should exclude debug', () => {
         logger = createLogger(
             {
