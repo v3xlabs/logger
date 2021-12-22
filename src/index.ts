@@ -10,6 +10,8 @@ export type Logger<K extends string> = {
     [a in K]: LogMethod;
 };
 
+export type RuntimeOrValue<K> = (() => K) | K;
+
 export type PadType = 'PREPEND' | 'APPEND' | 'NONE';
 
 export type SharedConfig = {
@@ -54,14 +56,14 @@ export type LogConfig = SharedConfig & {
      * @default [] (empty array)
      * @example ['debug'] (ignores all debug messages)
      */
-    exclude: string[];
+    exclude: RuntimeOrValue<string[]>;
     /**
      * List of tags to only log
      * If defined overrides `exclude`
      * @default undefined
      * @example ['error', 'important', 'success'] (only logs error, important, and success)
      */
-    filter: string[] | undefined;
+    filter: RuntimeOrValue<string[] | undefined>;
 };
 
 /**
@@ -100,7 +102,15 @@ export type MethodConfig = SharedConfig & {
     tags?: string[];
 };
 
-const pad = (
+type GenericLogFunction = (input: string) => void;
+
+type MethodList<A extends string> = { [k in A]: string | MethodConfig };
+
+export const resolveRuntimeOrValue = <K>(rov: RuntimeOrValue<K>) => {
+    return (typeof rov === 'function' ? (rov as Function)() : rov) as K;
+};
+
+export const pad = (
     text: string,
     length: number,
     paddingStrategy: PadType,
@@ -117,8 +127,6 @@ const pad = (
     if (paddingStrategy === 'PREPEND') return calculatedPadding + text;
 };
 
-type GenericLogFunction = (input: string) => void;
-
 /**
  * @name createLogger
  * Creates a logger with the specified methods and config
@@ -128,11 +136,16 @@ type GenericLogFunction = (input: string) => void;
  * @param [func=console.log] Custom logging function
  */
 export const createLogger = <A extends string>(
-    methods: { [k in A]: string | MethodConfig },
+    methods: MethodList<A> | MethodList<A>[],
     config: Partial<LogConfig> = {},
     func: GenericLogFunction | GenericLogFunction[] = console.log
 ) => {
     let functions: GenericLogFunction[] = Array.isArray(func) ? func : [func];
+
+    // If methods is a MethodList, use it, otherwise grab a random instance
+    const finalMethods: MethodList<A> = Array.isArray(methods)
+        ? methods[Math.floor(Math.random() * methods.length)]
+        : methods;
 
     // Fill default values incase not overridden by arg
     const completeConfig: LogConfig = {
@@ -162,14 +175,14 @@ export const createLogger = <A extends string>(
     // Convert all string methods to MethodConfig
     const completeMethods: { [k in A]: Required<MethodConfig> } = Object.assign(
         {},
-        ...(Object.keys(methods) as A[]).map((a) => {
-            if (typeof methods[a] == 'string') {
+        ...(Object.keys(finalMethods) as A[]).map((a) => {
+            if (typeof finalMethods[a] == 'string') {
                 // Return an inferred MethodConfig
                 return {
                     [a]: {
                         ...inferredMethodConfig,
                         ...{
-                            label: methods[a],
+                            label: finalMethods[a],
                         },
                     },
                 };
@@ -179,7 +192,7 @@ export const createLogger = <A extends string>(
             return {
                 [a]: {
                     ...inferredMethodConfig,
-                    ...(methods[a] as MethodConfig),
+                    ...(finalMethods[a] as MethodConfig),
                 },
             };
         })
@@ -200,31 +213,14 @@ export const createLogger = <A extends string>(
         ...Object.keys(completeMethods).map((methodHandle) => {
             const method = completeMethods[methodHandle as A];
 
-            const shouldBeFiltered =
-                completeConfig.filter && completeConfig.filter !== undefined
-                    ? !method.tags.some((r) =>
-                        (completeConfig.filter as string[]).includes(r)
-                    )
-                    : method.tags.some((r) =>
-                        completeConfig.exclude.includes(r)
-                    );
-
-            if (shouldBeFiltered) {
-                return {
-                    [methodHandle]: (...s: LogMethodInput[]) => {
-                        // Disabled Logger.
-                    },
-                };
-            }
-
             const [paddedText, newLinePadding, newLineEndPadding] = [
                 typeof method.label === 'string'
                     ? pad(
-                        method.label,
-                        maxLength,
-                        completeConfig.padding,
-                        method.paddingChar
-                    )
+                          method.label,
+                          maxLength,
+                          completeConfig.padding,
+                          method.paddingChar
+                      )
                     : '',
                 pad(
                     method.newLine,
@@ -242,6 +238,22 @@ export const createLogger = <A extends string>(
 
             return {
                 [methodHandle]: (...s: LogMethodInput[]) => {
+                    const filter = resolveRuntimeOrValue(completeConfig.filter);
+                    const exclude = resolveRuntimeOrValue(
+                        completeConfig.exclude
+                    );
+
+                    // Decide wether this should be filtered or not
+                    if (
+                        filter && filter !== undefined
+                            ? !method.tags.some((r) =>
+                                  (filter as string[]).includes(r)
+                              )
+                            : method.tags.some((r) => exclude.includes(r))
+                    )
+                        return;
+
+                    // Generate the value we should output
                     const value = s
                         .map((value) => {
                             if (typeof value !== 'string') {
@@ -261,19 +273,20 @@ export const createLogger = <A extends string>(
                             (value, index, array) =>
                                 (index == 0
                                     ? (typeof method.label === 'string'
-                                        ? paddedText
-                                        : pad(
-                                            method.label.calculate(),
-                                            maxLength,
-                                            completeConfig.padding,
-                                            method.paddingChar
-                                        )) + method.divider
+                                          ? paddedText
+                                          : pad(
+                                                method.label.calculate(),
+                                                maxLength,
+                                                completeConfig.padding,
+                                                method.paddingChar
+                                            )) + method.divider
                                     : (array.length - 1 == index
-                                        ? newLineEndPadding
-                                        : newLinePadding) + method.divider) +
+                                          ? newLineEndPadding
+                                          : newLinePadding) + method.divider) +
                                 value
                         )
                         .join('\n');
+                    // Run each of the final functions
                     functions.forEach((a) => a(value));
                 },
             };
