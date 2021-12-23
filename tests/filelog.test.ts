@@ -10,11 +10,11 @@ describe('Raw Execution', () => {
             path: 'logs/1',
         })('testing 123\nHello There!\n');
 
-        setImmediate(async () => {
+        setTimeout(async () => {
             expect(await fs.promises.readFile('logs/1/test', 'utf-8')).toEqual(
                 'testing 123\nHello There!\n\n'
             );
-        });
+        }, 0);
     });
 });
 
@@ -32,8 +32,8 @@ describe('FS Creation', () => {
             path: 'logs/2',
         })('');
 
-        setImmediate(async () => {
+        setTimeout(async () => {
             expect(await fs.promises.readFile('logs/2/test', 'utf-8'));
-        });
+        }, 0);
     });
 });
