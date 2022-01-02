@@ -2,7 +2,7 @@ import { inspect } from 'util';
 
 import { stripAnsi } from './ansi';
 
-export type LogMethodInput = string | object;
+export type LogMethodInput = string | number | boolean | object;
 
 export type LogMethod = (...input: LogMethodInput[]) => void;
 
