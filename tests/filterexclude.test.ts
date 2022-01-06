@@ -2,8 +2,8 @@ import chalk from 'chalk';
 
 import { createLogger, Logger } from '../src';
 
-const logFn = jest.fn();
-const neverLogFn = jest.fn();
+const logFunction = jest.fn();
+const neverLogFunction = jest.fn();
 
 describe('Filter & Exclude', () => {
     let logger: Logger<'info' | 'error' | 'debug'>;
@@ -28,11 +28,11 @@ describe('Filter & Exclude', () => {
                 }
             },
             { padding: 'PREPEND', color: false},
-            logFn
+            logFunction
         );
 
         logger.info('info');
-        expect(logFn).toBeCalledWith(
+        expect(logFunction).toBeCalledWith(
             `   ${chalk.greenBright('[OK]')} info`
         );
     });
@@ -53,11 +53,11 @@ describe('Filter & Exclude', () => {
                 }
             },
             { padding: 'PREPEND', color: false, exclude: ['debug'] },
-            logFn
+            logFunction
         );
 
         logger.debug('debug');
-        expect(neverLogFn).not.toBeCalled();
+        expect(neverLogFunction).not.toBeCalled();
     });
 
     it('should only show prod tag', () => {
@@ -76,14 +76,14 @@ describe('Filter & Exclude', () => {
                 }
             },
             { padding: 'PREPEND', color: false, filter: ['prod'] },
-            logFn
+            logFunction
         );
 
         logger.info('info');
-        expect(neverLogFn).not.toBeCalled();
+        expect(neverLogFunction).not.toBeCalled();
 
         logger.error('error');
-        expect(logFn).toBeCalledWith(
+        expect(logFunction).toBeCalledWith(
             `${chalk.redBright('[ERROR]')} error`
         );
     });
@@ -112,11 +112,11 @@ describe('Runtime Filter & Exclude', () => {
                 }
             },
             { padding: 'PREPEND', color: false, exclude: () => ['debug'] },
-            logFn
+            logFunction
         );
 
         logger.debug('debug');
-        expect(neverLogFn).not.toBeCalled();
+        expect(neverLogFunction).not.toBeCalled();
     });
 
     it('should only show prod tag', () => {
@@ -135,14 +135,14 @@ describe('Runtime Filter & Exclude', () => {
                 }
             },
             { padding: 'PREPEND', color: false, filter: () => ['prod'] },
-            logFn
+            logFunction
         );
 
         logger.info('info');
-        expect(neverLogFn).not.toBeCalled();
+        expect(neverLogFunction).not.toBeCalled();
 
         logger.error('error');
-        expect(logFn).toBeCalledWith(
+        expect(logFunction).toBeCalledWith(
             `${chalk.redBright('[ERROR]')} error`
         );
     });

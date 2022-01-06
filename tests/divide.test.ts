@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 import { createLogger, Logger } from '../src';
 
-const logFn = jest.fn();
+const logFunction = jest.fn();
 
 describe('Custom divider', () => {
     let logger: Logger<'foo' | 'bar'>;
@@ -23,7 +23,7 @@ describe('Custom divider', () => {
                 },
             },
             { padding: 'PREPEND', color: false },
-            logFn
+            logFunction
         );
     });
 
@@ -33,14 +33,14 @@ describe('Custom divider', () => {
 
     it('should use default divider', () => {
         logger.foo('This is a cool logging library');
-        expect(logFn).toBeCalledWith(
+        expect(logFunction).toBeCalledWith(
             `${chalk.greenBright('[FOO]')} This is a cool logging library`
         );
     });
 
     it('should use custom divider', () => {
         logger.bar('This is even cooler');
-        expect(logFn).toBeCalledWith(
+        expect(logFunction).toBeCalledWith(
             `${chalk.redBright('[BAR]')} | This is even cooler`
         );
     });

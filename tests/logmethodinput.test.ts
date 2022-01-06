@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 import { createLogger, Logger, shimLog } from '../src';
 
-const logFn = jest.fn();
+const logFunction = jest.fn();
 
 describe('Capable of logging multi-values', () => {
     let logger: Logger<'ok'>;
@@ -17,7 +17,7 @@ describe('Capable of logging multi-values', () => {
                 },
             },
             { padding: 'PREPEND', color: false },
-            logFn
+            logFunction
         );
     });
 
@@ -33,7 +33,7 @@ describe('Capable of logging multi-values', () => {
             [ 'list' ],
             { object: 'yes' }
         );
-        expect(logFn).toBeCalledWith(
+        expect(logFunction).toBeCalledWith(
             `${chalk.greenBright('[OK]')} This is the best logging library\n` +
             '  |  5\n' +
             '  |  true\n' +
