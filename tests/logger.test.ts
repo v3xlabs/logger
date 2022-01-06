@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 import { createLogger, Logger, shimLog } from '../src';
 
-const logFn = jest.fn();
+const logFunction = jest.fn();
 
 describe('Basic Logging', () => {
     let logger: Logger<'ok'>;
@@ -17,7 +17,7 @@ describe('Basic Logging', () => {
                 },
             },
             { padding: 'PREPEND', color: false },
-            logFn
+            logFunction
         );
     });
 
@@ -31,7 +31,7 @@ describe('Basic Logging', () => {
             'It\'s not even a question',
             'It even supports multi\nline logs'
         );
-        expect(logFn).toBeCalledWith(
+        expect(logFunction).toBeCalledWith(
             `${chalk.greenBright('[OK]')} This is the best logging library\n` +
             '  |  It\'s not even a question\n' +
             '  |  It even supports multi\n' +

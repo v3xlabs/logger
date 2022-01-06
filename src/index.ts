@@ -1,4 +1,4 @@
-import { inspect } from 'util';
+import { inspect } from 'node:util';
 
 import { stripAnsi } from './ansi';
 
@@ -138,9 +138,9 @@ export const pad = (
 export const createLogger = <A extends string>(
     methods: MethodList<A> | MethodList<A>[],
     config: Partial<LogConfig> = {},
-    func: GenericLogFunction | GenericLogFunction[] = console.log
+    outputFunctions: GenericLogFunction | GenericLogFunction[] = console.log
 ) => {
-    let functions: GenericLogFunction[] = Array.isArray(func) ? func : [func];
+    const functions: GenericLogFunction[] = Array.isArray(outputFunctions) ? outputFunctions : [outputFunctions];
 
     // If methods is a MethodList, use it, otherwise grab a random instance
     const finalMethods: MethodList<A> = Array.isArray(methods)
@@ -149,16 +149,16 @@ export const createLogger = <A extends string>(
 
     // Fill default values incase not overridden by arg
     const completeConfig: LogConfig = {
-        ...{
-            divider: ' ',
-            newLine: '├-',
-            newLineEnd: '└-',
-            padding: 'PREPEND',
-            paddingChar: ' ',
-            color: true,
-            exclude: [],
-            filter: undefined,
-        },
+        
+        divider: ' ',
+        newLine: '├-',
+        newLineEnd: '└-',
+        padding: 'PREPEND',
+        paddingChar: ' ',
+        color: true,
+        exclude: [],
+        filter: undefined
+        ,
         ...config,
     };
 
@@ -181,9 +181,9 @@ export const createLogger = <A extends string>(
                 return {
                     [a]: {
                         ...inferredMethodConfig,
-                        ...{
-                            label: finalMethods[a],
-                        },
+                        
+                        label: finalMethods[a]
+                        ,
                     },
                 };
             }
@@ -286,16 +286,17 @@ export const createLogger = <A extends string>(
                                 value
                         )
                         .join('\n');
+
                     // Run each of the final functions
-                    functions.forEach((a) => a(value));
+                    for (const a of functions)  a(value);
                 },
             };
         })
     ) as Logger<A>;
 };
 
-export const shimLog = <A extends string>(logger: Logger<A>, func: A) => {
+export const shimLog = <A extends string>(logger: Logger<A>, logName: A) => {
     Object.defineProperty(console, 'log', {
-        value: logger[func],
+        value: logger[logName],
     });
 };

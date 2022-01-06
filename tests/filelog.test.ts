@@ -1,6 +1,6 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
-import { FileLogger } from '../src/FileLog';
+import { FileLogger } from '../src/file-log';
 
 describe('Raw Execution', () => {
     it('writes to an outside file', async () => {

@@ -2,7 +2,7 @@ import chalk from 'chalk';
 
 import { createLogger, Logger } from '../src';
 
-const logFn = jest.fn<void, [string]>();
+const logFunction = jest.fn<void, [string]>();
 
 describe('Random Config', () => {
     let logger: Logger<'foo' | 'bar'>;
@@ -38,7 +38,7 @@ describe('Random Config', () => {
                 },
             ],
             { padding: 'PREPEND', color: false },
-            logFn
+            logFunction
         );
     });
 
@@ -49,10 +49,10 @@ describe('Random Config', () => {
     it('should accept random configs', () => {
         logger.foo('This is a cool logging library');
         expect(
-            logFn.mock.calls.some(a => a.includes(
+            logFunction.mock.calls.some(a => a.includes(
                 'FOO This is a cool logging library'
             )) ||
-            logFn.mock.calls.some(a => a.includes(
+            logFunction.mock.calls.some(a => a.includes(
                 '[FOO] This is a cool logging library',
             ))
         ).toBeTruthy();

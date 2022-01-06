@@ -5,7 +5,7 @@ describe('Default values', () => {
     let logger: Logger<'default'>;
 
     beforeAll(() => {
-        consoleLog = jest.spyOn(console, 'log').mockImplementation(() => { });
+        consoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
         logger = createLogger({
             default: 'OK',
         });
