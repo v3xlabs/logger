@@ -2,7 +2,7 @@ import { inspect } from 'node:util';
 
 import { stripAnsi } from './ansi';
 
-export type LogMethodInput = string | number | boolean | object;
+export type LogMethodInput = string | number | boolean | object | null | undefined;
 
 export type LogMethod = (...input: LogMethodInput[]) => void;
 
