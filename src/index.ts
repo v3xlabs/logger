@@ -2,7 +2,13 @@ import { inspect } from 'node:util';
 
 import { stripAnsi } from './ansi';
 
-export type LogMethodInput = string | number | boolean | object | null | undefined;
+export type LogMethodInput =
+    | string
+    | number
+    | boolean
+    | object
+    | null
+    | undefined;
 
 export type LogMethod = (...input: LogMethodInput[]) => void;
 
@@ -140,7 +146,9 @@ export const createLogger = <A extends string>(
     config: Partial<LogConfig> = {},
     outputFunctions: GenericLogFunction | GenericLogFunction[] = console.log
 ) => {
-    const functions: GenericLogFunction[] = Array.isArray(outputFunctions) ? outputFunctions : [outputFunctions];
+    const functions: GenericLogFunction[] = Array.isArray(outputFunctions)
+        ? outputFunctions
+        : [outputFunctions];
 
     // If methods is a MethodList, use it, otherwise grab a random instance
     const finalMethods: MethodList<A> = Array.isArray(methods)
@@ -149,7 +157,6 @@ export const createLogger = <A extends string>(
 
     // Fill default values incase not overridden by arg
     const completeConfig: LogConfig = {
-        
         divider: ' ',
         newLine: '├-',
         newLineEnd: '└-',
@@ -157,8 +164,7 @@ export const createLogger = <A extends string>(
         paddingChar: ' ',
         color: true,
         exclude: [],
-        filter: undefined
-        ,
+        filter: undefined,
         ...config,
     };
 
@@ -181,9 +187,7 @@ export const createLogger = <A extends string>(
                 return {
                     [a]: {
                         ...inferredMethodConfig,
-                        
-                        label: finalMethods[a]
-                        ,
+                        label: finalMethods[a],
                     },
                 };
             }
@@ -288,7 +292,7 @@ export const createLogger = <A extends string>(
                         .join('\n');
 
                     // Run each of the final functions
-                    for (const a of functions)  a(value);
+                    for (const a of functions) a(value);
                 },
             };
         })
