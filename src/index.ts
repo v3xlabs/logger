@@ -10,10 +10,12 @@ export type LogMethodInput =
     | null
     | undefined;
 
-export type LogMethod = (...input: LogMethodInput[]) => void;
+export type LogMethod<K extends string> = (
+    ...input: LogMethodInput[]
+) => Logger<K>;
 
 export type Logger<K extends string> = {
-    [a in K]: LogMethod;
+    [a in K]: LogMethod<K>;
 };
 
 export type RuntimeOrValue<K> = (() => K) | K;
@@ -212,8 +214,10 @@ export const createLogger = <A extends string>(
         )
     );
 
+    const logger = {};
+
     return Object.assign(
-        {},
+        logger,
         ...Object.keys(completeMethods).map((methodHandle) => {
             const method = completeMethods[methodHandle as A];
 
@@ -293,6 +297,8 @@ export const createLogger = <A extends string>(
 
                     // Run each of the final functions
                     for (const a of functions) a(value);
+
+                    return logger;
                 },
             };
         })
