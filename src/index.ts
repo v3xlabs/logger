@@ -110,7 +110,7 @@ export type MethodConfig = SharedConfig & {
     tags?: string[];
 };
 
-export type GenericLogFunction = (input: string) => any;
+export type GenericLogFunction = (...input: unknown[]) => any;
 
 export type MethodList<A extends string> = { [k in A]: string | MethodConfig };
 
