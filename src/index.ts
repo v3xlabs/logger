@@ -110,9 +110,9 @@ export type MethodConfig = SharedConfig & {
     tags?: string[];
 };
 
-type GenericLogFunction = (input: string) => void;
+export type GenericLogFunction = (input: string) => any;
 
-type MethodList<A extends string> = { [k in A]: string | MethodConfig };
+export type MethodList<A extends string> = { [k in A]: string | MethodConfig };
 
 export const resolveRuntimeOrValue = <K>(rov: RuntimeOrValue<K>) => {
     return (typeof rov === 'function' ? (rov as Function)() : rov) as K;
