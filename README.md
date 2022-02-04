@@ -1,14 +1,27 @@
-![lvksh logger](./assets/banner.png)
+[![MINIFIED SIZE](https://img.shields.io/bundlephobia/min/@lvksh/logger.svg)]() [![COVERAGE](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)]() [![LANGUAGES](https://img.shields.io/github/languages/top/lvkdotsh/logger)]() [![DEPENDENCIES](https://img.shields.io/badge/dependencies-0-brightgreen.svg)]() [![NPM](https://img.shields.io/npm/dt/@lvksh/logger)]()
 
-[![MINIFIED SIZE](https://img.shields.io/bundlephobia/min/@lvksh/logger.svg)]()
-[![COVERAGE](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)]()
-[![LANGUAGES](https://img.shields.io/github/languages/top/lvkdotsh/logger)]()
-[![DEPENDENCIRES](https://img.shields.io/badge/dependencies-0-brightgreen.svg)]()
-[![NPM](https://img.shields.io/npm/dt/@lvksh/logger)]()
+<p align="center">
+  <a href="https://firefly-iii.org/">
+    <img src="./assets/example.png" alt="Firefly III" width="30%" style="border-radius: 15px">
+  </a>
+</p>
 
-<center>
-    Zero dependency, lightweight, blazing fast customizable logging library
-</center>
+<h1 align="center">@lvksh/logger</h1>
+
+<p align="center">
+    A highly customizable lightweight logging library
+    <br />
+    <a href="https://docs.firefly-iii.org/"><strong>Explore the documentation</strong></a>
+    <br />
+    <br />
+    <a href="https://demo.firefly-iii.org/">View the demo</a>
+    ·
+    <a href="https://github.com/firefly-iii/firefly-iii/issues">Report a bug</a>
+    ·
+    <a href="https://github.com/firefly-iii/firefly-iii/issues">Request a feature</a>
+    ·
+    <a href="https://github.com/firefly-iii/firefly-iii/discussions">Ask questions</a>
+</p>
 
 ## Table of Contents
 
