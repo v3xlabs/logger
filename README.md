@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://firefly-iii.org/">
-    <img src="./assets/example.png" alt="Firefly III" width="30%" style="border-radius: 15px">
+    <img src="./assets/example.png" alt="" width="240" style="border-radius: 10px">
   </a>
 </p>
 
