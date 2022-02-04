@@ -1,5 +1,3 @@
-[![MINIFIED SIZE](https://img.shields.io/bundlephobia/min/@lvksh/logger.svg)]() [![COVERAGE](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)]() [![LANGUAGES](https://img.shields.io/github/languages/top/lvkdotsh/logger)]() [![DEPENDENCIES](https://img.shields.io/badge/dependencies-0-brightgreen.svg)]() [![NPM](https://img.shields.io/npm/dt/@lvksh/logger)]()
-
 <p align="center">
   <a href="https://firefly-iii.org/">
     <img src="./assets/example.png" alt="" width="240" style="border-radius: 10px">
@@ -22,6 +20,14 @@
     ·
     <a href="https://github.com/firefly-iii/firefly-iii/discussions">Ask questions</a>
 </p>
+
+<p align="center">
+  <img src="https://img.shields.io/bundlephobia/min/@lvksh/logger.svg" />
+  <img src="https://img.shields.io/badge/coverage-100%25-brightgreen.svg" />
+  <img src="https://img.shields.io/github/languages/top/lvkdotsh/logger" />
+  <img src="https://img.shields.io/badge/dependencies-0-brightgreen.svg" />
+  <img src="https://img.shields.io/npm/dt/@lvksh/logger" />
+</center>
 
 ## Table of Contents
 
