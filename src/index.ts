@@ -22,7 +22,7 @@ export type RuntimeOrValue<K> = (() => K) | K;
 
 export type PadType = 'PREPEND' | 'APPEND' | 'NONE';
 
-export type SharedConfig = {
+export type SharedConfig<M extends string> = {
     /**
      * The character to be used when a line needs to be broken
      * This overrides any value set by the logger
@@ -46,9 +46,13 @@ export type SharedConfig = {
      * @default " "
      */
     paddingChar?: string;
+
+    preProcessors: ((method: M, input: LogMethodInput[]) => LogMethodInput[])[];
+
+    postProcessors: ((method: M, lines: string[]) => string[])[];
 };
 
-export type LogConfig = SharedConfig & {
+export type LogConfig<M extends string> = SharedConfig<M> & {
     /**
      * Wether to add spacing in front or behind the specified label
      * @default "PREPEND"
@@ -95,7 +99,7 @@ export type RuntimeLabel = {
  */
 export type StaticLabel = string;
 
-export type MethodConfig = SharedConfig & {
+export type MethodConfig<M extends string> = SharedConfig<M> & {
     /**
      * The label used to prefix log messages.
      * Used for organization and sorting purposes.
@@ -112,7 +116,7 @@ export type MethodConfig = SharedConfig & {
 
 export type GenericLogFunction = (...input: unknown[]) => any;
 
-export type MethodList<A extends string> = { [k in A]: string | MethodConfig };
+export type MethodList<A extends string> = { [k in A]: string | MethodConfig<A> };
 
 export const resolveRuntimeOrValue = <K>(rov: RuntimeOrValue<K>) => {
     return (typeof rov === 'function' ? (rov as Function)() : rov) as K;
@@ -145,7 +149,7 @@ export const pad = (
  */
 export const createLogger = <A extends string>(
     methods: MethodList<A> | MethodList<A>[],
-    config: Partial<LogConfig> = {},
+    config: Partial<LogConfig<A>> = {},
     outputFunctions: GenericLogFunction | GenericLogFunction[] = console.log
 ) => {
     const functions: GenericLogFunction[] = Array.isArray(outputFunctions)
@@ -158,7 +162,7 @@ export const createLogger = <A extends string>(
         : methods;
 
     // Fill default values incase not overridden by arg
-    const completeConfig: LogConfig = {
+    const completeConfig: LogConfig<A> = {
         divider: ' ',
         newLine: '├-',
         newLineEnd: '└-',
@@ -167,21 +171,25 @@ export const createLogger = <A extends string>(
         color: true,
         exclude: [],
         filter: undefined,
+        preProcessors: [],
+        postProcessors: [],
         ...config,
     };
 
     // Infer the default method config
-    const inferredMethodConfig: MethodConfig = {
+    const inferredMethodConfig: MethodConfig<A> = {
         label: '-',
         newLine: completeConfig.newLine,
         newLineEnd: completeConfig.newLineEnd,
         divider: completeConfig.divider,
         paddingChar: completeConfig.paddingChar,
+        preProcessors: completeConfig.preProcessors,
+        postProcessors: completeConfig.postProcessors,
         tags: ['default'],
     };
 
     // Convert all string methods to MethodConfig
-    const completeMethods: { [k in A]: Required<MethodConfig> } = Object.assign(
+    const completeMethods: { [k in A]: Required<MethodConfig<A>> } = Object.assign(
         {},
         ...(Object.keys(finalMethods) as A[]).map((a) => {
             if (typeof finalMethods[a] == 'string') {
@@ -198,7 +206,7 @@ export const createLogger = <A extends string>(
             return {
                 [a]: {
                     ...inferredMethodConfig,
-                    ...(finalMethods[a] as MethodConfig),
+                    ...(finalMethods[a] as MethodConfig<A>),
                 },
             };
         })
@@ -206,7 +214,7 @@ export const createLogger = <A extends string>(
 
     // Calculate the max length
     const maxLength = Math.max(
-        ...(Object.values(completeMethods) as Required<MethodConfig>[]).map(
+        ...(Object.values(completeMethods) as Required<MethodConfig<A>>[]).map(
             (a) =>
                 typeof a.label === 'string'
                     ? stripAnsi(a.label).length
@@ -261,8 +269,10 @@ export const createLogger = <A extends string>(
                     )
                         return;
 
+                    const inputs = completeConfig.preProcessors.reduce((acc, curr) => acc = curr(methodHandle as A, acc), s);
+
                     // Generate the value we should output
-                    const value = s
+                    const lines = inputs
                         .map((value) => {
                             if (typeof value !== 'string') {
                                 value = inspect(
@@ -292,8 +302,9 @@ export const createLogger = <A extends string>(
                                         ? newLineEndPadding
                                         : newLinePadding) + method.divider) +
                                 value
-                        )
-                        .join('\n');
+                        );
+
+                    const value = completeConfig.postProcessors.reduce((acc, curr) => acc = curr(methodHandle as A, acc), lines);
 
                     // Run each of the final functions
                     for (const a of functions) a(value);
