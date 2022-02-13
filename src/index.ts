@@ -47,9 +47,9 @@ export type SharedConfig<M extends string> = {
      */
     paddingChar?: string;
 
-    preProcessors: ((method: M, input: LogMethodInput[]) => LogMethodInput[])[];
+    preProcessors?: ((method: M, input: LogMethodInput[]) => LogMethodInput[])[];
 
-    postProcessors: ((method: M, lines: string[]) => string[])[];
+    postProcessors?: ((method: M, lines: string[]) => string[])[];
 };
 
 export type LogConfig<M extends string> = SharedConfig<M> & {
@@ -269,7 +269,7 @@ export const createLogger = <A extends string>(
                     )
                         return;
 
-                    const inputs = completeConfig.preProcessors.reduce((acc, curr) => acc = curr(methodHandle as A, acc), s);
+                    const inputs = completeConfig.preProcessors?.reduce((accumulator, current) => accumulator = current(methodHandle as A, accumulator), s) ?? s;
 
                     // Generate the value we should output
                     const lines = inputs
@@ -304,7 +304,7 @@ export const createLogger = <A extends string>(
                                 value
                         );
 
-                    const value = completeConfig.postProcessors.reduce((acc, curr) => acc = curr(methodHandle as A, acc), lines);
+                    const value = (completeConfig.postProcessors?.reduce((accumulator, current) => accumulator = current(methodHandle as A, accumulator), lines) ?? lines).join("\n");
 
                     // Run each of the final functions
                     for (const a of functions) a(value);

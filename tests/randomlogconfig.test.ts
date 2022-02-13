@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 
-import { createLogger, Logger } from '../src';
+import { createLogger, GenericLogFunction, Logger } from '../src';
 
 const logFunction = jest.fn<void, [string]>();
 
@@ -38,7 +38,7 @@ describe('Random Config', () => {
                 },
             ],
             { padding: 'PREPEND', color: false },
-            logFunction
+            logFunction as GenericLogFunction
         );
     });
 
