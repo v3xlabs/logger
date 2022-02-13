@@ -21,8 +21,9 @@ describe('Pre Process Logging', () => {
                 color: false,
                 preProcessors: [
                     (method, inputs) => {
-                        let i = 0;
-                        return inputs.map(it => `[Called ${method} ${++i} times] ${it}`);
+                        let index = 0;
+
+                        return inputs.map(it => `[Called ${method} ${++index} times] ${it}`);
                     }
                 ]
             },

@@ -21,8 +21,9 @@ describe('Post Process Logging', () => {
                 color: false,
                 postProcessors: [
                     (method, lines) => {
-                        let i = 0;
-                        return lines.map(it => `[Called ${method} ${++i} times] ${it}`);
+                        let index = 0;
+
+                        return lines.map(it => `[Called ${method} ${++index} times] ${it}`);
                     }
                 ]
             },

@@ -304,7 +304,7 @@ export const createLogger = <A extends string>(
                                 value
                         );
 
-                    const value = (completeConfig.postProcessors?.reduce((accumulator, current) => accumulator = current(methodHandle as A, accumulator), lines) ?? lines).join("\n");
+                    const value = (completeConfig.postProcessors?.reduce((accumulator, current) => accumulator = current(methodHandle as A, accumulator), lines) ?? lines).join('\n');
 
                     // Run each of the final functions
                     for (const a of functions) a(value);
