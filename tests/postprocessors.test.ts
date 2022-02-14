@@ -20,10 +20,10 @@ describe('Post Process Logging', () => {
                 padding: 'PREPEND',
                 color: false,
                 postProcessors: [
-                    (method, lines) => {
+                    (lines, { name }) => {
                         let index = 0;
 
-                        return lines.map(it => `[Called ${method} ${++index} times] ${it}`);
+                        return lines.map(it => `[Called ${name} ${++index} times] ${it}`);
                     }
                 ]
             },

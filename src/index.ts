@@ -73,9 +73,9 @@ export type LogConfig<M extends string> = SharedConfig & {
      */
     filter: RuntimeOrValue<string[] | undefined>;
 
-    preProcessors?: ((method: M, input: LogMethodInput[]) => LogMethodInput[])[];
+    preProcessors?: ((input: LogMethodInput[], method: { name: M } & MethodConfig, logger: LogConfig<M>) => LogMethodInput[])[];
 
-    postProcessors?: ((method: M, lines: string[]) => string[])[];
+    postProcessors?: ((lines: string[], method: { name: M } & MethodConfig, logger: LogConfig<M>) => string[])[];
 };
 
 /**
@@ -270,7 +270,7 @@ export const createLogger = <A extends string>(
                     let inputs = s;
 
                     for(const processor of completeConfig.preProcessors) {
-                        inputs = processor(methodHandle as A, inputs);
+                        inputs = processor(inputs, { name: methodHandle as A, ...method }, completeConfig);
                     }
 
                     // Generate the value we should output
@@ -309,7 +309,7 @@ export const createLogger = <A extends string>(
                     let parsedLines = lines;
 
                     for(const processor of completeConfig.postProcessors) {
-                        parsedLines = processor(methodHandle as A, parsedLines);
+                        parsedLines = processor(parsedLines, { name: methodHandle as A, ...method }, completeConfig);
                     }
 
                     const value = parsedLines.join('\n');
