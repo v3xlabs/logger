@@ -22,7 +22,7 @@ export type RuntimeOrValue<K> = (() => K) | K;
 
 export type PadType = 'PREPEND' | 'APPEND' | 'NONE';
 
-export type SharedConfig<M extends string> = {
+export type SharedConfig = {
     /**
      * The character to be used when a line needs to be broken
      * This overrides any value set by the logger
@@ -46,13 +46,9 @@ export type SharedConfig<M extends string> = {
      * @default " "
      */
     paddingChar?: string;
-
-    preProcessors?: ((method: M, input: LogMethodInput[]) => LogMethodInput[])[];
-
-    postProcessors?: ((method: M, lines: string[]) => string[])[];
 };
 
-export type LogConfig<M extends string> = SharedConfig<M> & {
+export type LogConfig<M extends string> = SharedConfig & {
     /**
      * Wether to add spacing in front or behind the specified label
      * @default "PREPEND"
@@ -76,6 +72,10 @@ export type LogConfig<M extends string> = SharedConfig<M> & {
      * @example ['error', 'important', 'success'] (only logs error, important, and success)
      */
     filter: RuntimeOrValue<string[] | undefined>;
+
+    preProcessors?: ((method: M, input: LogMethodInput[]) => LogMethodInput[])[];
+
+    postProcessors?: ((method: M, lines: string[]) => string[])[];
 };
 
 /**
@@ -99,7 +99,7 @@ export type RuntimeLabel = {
  */
 export type StaticLabel = string;
 
-export type MethodConfig<M extends string> = SharedConfig<M> & {
+export type MethodConfig<M extends string> = SharedConfig & {
     /**
      * The label used to prefix log messages.
      * Used for organization and sorting purposes.
@@ -162,7 +162,7 @@ export const createLogger = <A extends string>(
         : methods;
 
     // Fill default values incase not overridden by arg
-    const completeConfig: LogConfig<A> = {
+    const completeConfig: Required<LogConfig<A>> = {
         divider: ' ',
         newLine: '├-',
         newLineEnd: '└-',
@@ -183,8 +183,6 @@ export const createLogger = <A extends string>(
         newLineEnd: completeConfig.newLineEnd,
         divider: completeConfig.divider,
         paddingChar: completeConfig.paddingChar,
-        preProcessors: completeConfig.preProcessors,
-        postProcessors: completeConfig.postProcessors,
         tags: ['default'],
     };
 
@@ -269,7 +267,11 @@ export const createLogger = <A extends string>(
                     )
                         return;
 
-                    const inputs = completeConfig.preProcessors?.reduce((accumulator, current) => accumulator = current(methodHandle as A, accumulator), s) ?? s;
+                    let inputs = s;
+
+                    for(const processor of completeConfig.preProcessors) {
+                        inputs = processor(methodHandle as A, inputs);
+                    }
 
                     // Generate the value we should output
                     const lines = inputs
@@ -304,7 +306,13 @@ export const createLogger = <A extends string>(
                                 value
                         );
 
-                    const value = (completeConfig.postProcessors?.reduce((accumulator, current) => accumulator = current(methodHandle as A, accumulator), lines) ?? lines).join('\n');
+                    let parsedLines = lines;
+
+                    for(const processor of completeConfig.postProcessors) {
+                        parsedLines = processor(methodHandle as A, parsedLines);
+                    }
+                    
+                    const value = parsedLines.join('\n');
 
                     // Run each of the final functions
                     for (const a of functions) a(value);
