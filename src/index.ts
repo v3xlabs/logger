@@ -99,7 +99,7 @@ export type RuntimeLabel = {
  */
 export type StaticLabel = string;
 
-export type MethodConfig<M extends string> = SharedConfig & {
+export type MethodConfig = SharedConfig & {
     /**
      * The label used to prefix log messages.
      * Used for organization and sorting purposes.
@@ -116,7 +116,7 @@ export type MethodConfig<M extends string> = SharedConfig & {
 
 export type GenericLogFunction = (...input: unknown[]) => any;
 
-export type MethodList<A extends string> = { [k in A]: string | MethodConfig<A> };
+export type MethodList<A extends string> = { [k in A]: string | MethodConfig };
 
 export const resolveRuntimeOrValue = <K>(rov: RuntimeOrValue<K>) => {
     return (typeof rov === 'function' ? (rov as Function)() : rov) as K;
@@ -177,7 +177,7 @@ export const createLogger = <A extends string>(
     };
 
     // Infer the default method config
-    const inferredMethodConfig: MethodConfig<A> = {
+    const inferredMethodConfig: MethodConfig = {
         label: '-',
         newLine: completeConfig.newLine,
         newLineEnd: completeConfig.newLineEnd,
@@ -187,7 +187,7 @@ export const createLogger = <A extends string>(
     };
 
     // Convert all string methods to MethodConfig
-    const completeMethods: { [k in A]: Required<MethodConfig<A>> } = Object.assign(
+    const completeMethods: { [k in A]: Required<MethodConfig> } = Object.assign(
         {},
         ...(Object.keys(finalMethods) as A[]).map((a) => {
             if (typeof finalMethods[a] == 'string') {
@@ -204,7 +204,7 @@ export const createLogger = <A extends string>(
             return {
                 [a]: {
                     ...inferredMethodConfig,
-                    ...(finalMethods[a] as MethodConfig<A>),
+                    ...(finalMethods[a] as MethodConfig),
                 },
             };
         })
@@ -212,7 +212,7 @@ export const createLogger = <A extends string>(
 
     // Calculate the max length
     const maxLength = Math.max(
-        ...(Object.values(completeMethods) as Required<MethodConfig<A>>[]).map(
+        ...(Object.values(completeMethods) as Required<MethodConfig>[]).map(
             (a) =>
                 typeof a.label === 'string'
                     ? stripAnsi(a.label).length
@@ -311,7 +311,7 @@ export const createLogger = <A extends string>(
                     for(const processor of completeConfig.postProcessors) {
                         parsedLines = processor(methodHandle as A, parsedLines);
                     }
-                    
+
                     const value = parsedLines.join('\n');
 
                     // Run each of the final functions
