@@ -48,7 +48,7 @@ export type SharedConfig = {
     paddingChar?: string;
 };
 
-export type LogConfig = SharedConfig & {
+export type LogConfig<M extends string> = SharedConfig & {
     /**
      * Wether to add spacing in front or behind the specified label
      * @default "PREPEND"
@@ -72,6 +72,20 @@ export type LogConfig = SharedConfig & {
      * @example ['error', 'important', 'success'] (only logs error, important, and success)
      */
     filter: RuntimeOrValue<string[] | undefined>;
+
+    /**
+     * A list of functions to handle input pre processing
+     * @default []
+     * @example [(in) => in]
+     */
+    preProcessors?: ((input: LogMethodInput[], method: { name: M } & MethodConfig, logger: LogConfig<M>) => LogMethodInput[])[];
+
+    /**
+     * A list of functions to handle input post processing
+     * @default []
+     * @example [(lines) => lines]
+     */
+    postProcessors?: ((lines: string[], method: { name: M } & MethodConfig, logger: LogConfig<M>) => string[])[];
 };
 
 /**
@@ -145,7 +159,7 @@ export const pad = (
  */
 export const createLogger = <A extends string>(
     methods: MethodList<A> | MethodList<A>[],
-    config: Partial<LogConfig> = {},
+    config: Partial<LogConfig<A>> = {},
     outputFunctions: GenericLogFunction | GenericLogFunction[] = console.log
 ) => {
     const functions: GenericLogFunction[] = Array.isArray(outputFunctions)
@@ -158,7 +172,7 @@ export const createLogger = <A extends string>(
         : methods;
 
     // Fill default values incase not overridden by arg
-    const completeConfig: LogConfig = {
+    const completeConfig: Required<LogConfig<A>> = {
         divider: ' ',
         newLine: '├-',
         newLineEnd: '└-',
@@ -167,6 +181,8 @@ export const createLogger = <A extends string>(
         color: true,
         exclude: [],
         filter: undefined,
+        preProcessors: [],
+        postProcessors: [],
         ...config,
     };
 
@@ -261,8 +277,14 @@ export const createLogger = <A extends string>(
                     )
                         return;
 
+                    let inputs = s;
+
+                    for(const processor of completeConfig.preProcessors) {
+                        inputs = processor(inputs, { name: methodHandle as A, ...method }, completeConfig);
+                    }
+
                     // Generate the value we should output
-                    const value = s
+                    const lines = inputs
                         .map((value) => {
                             if (typeof value !== 'string') {
                                 value = inspect(
@@ -292,8 +314,15 @@ export const createLogger = <A extends string>(
                                         ? newLineEndPadding
                                         : newLinePadding) + method.divider) +
                                 value
-                        )
-                        .join('\n');
+                        );
+
+                    let parsedLines = lines;
+
+                    for(const processor of completeConfig.postProcessors) {
+                        parsedLines = processor(parsedLines, { name: methodHandle as A, ...method }, completeConfig);
+                    }
+
+                    const value = parsedLines.join('\n');
 
                     // Run each of the final functions
                     for (const a of functions) a(value);
