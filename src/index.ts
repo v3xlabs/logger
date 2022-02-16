@@ -73,8 +73,18 @@ export type LogConfig<M extends string> = SharedConfig & {
      */
     filter: RuntimeOrValue<string[] | undefined>;
 
+    /**
+     * A list of functions to handle input pre processing
+     * @default []
+     * @example [(in) => in]
+     */
     preProcessors?: ((input: LogMethodInput[], method: { name: M } & MethodConfig, logger: LogConfig<M>) => LogMethodInput[])[];
 
+    /**
+     * A list of functions to handle input post processing
+     * @default []
+     * @example [(lines) => lines]
+     */
     postProcessors?: ((lines: string[], method: { name: M } & MethodConfig, logger: LogConfig<M>) => string[])[];
 };
 
