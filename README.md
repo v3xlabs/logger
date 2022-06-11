@@ -118,7 +118,7 @@ shimLog(log, 'debug');
 ```typescript
 import { join } from 'path';
 import { createLogger } from '@lvksh/logger';
-import { FileLogger } from '@lvksh/logger/lib/FileLog';
+import { FileLogger } from '@lvksh/logger/lib/file-log';
 
 const log = createLogger(
     {
@@ -141,7 +141,7 @@ log.OK('Hello World');
 ```typescript
 import { join } from 'path';
 import { createLogger } from '@lvksh/logger';
-import { FileLogger, FileLoggerConfig } from '@lvksh/logger/lib/FileLog';
+import { FileLogger, FileLoggerConfig } from '@lvksh/logger/lib/file-log';
 
 const fileConfig: FileLoggerConfig = {
     mode: 'NEW_FILE',
