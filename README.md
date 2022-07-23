@@ -7,7 +7,7 @@
 [![NPM](https://img.shields.io/npm/dt/@lvksh/logger)]()
 
 <center>
-    Zero dependency, lightweight, blazing fast customizable logging library
+    Zero dependency, lightweight, blazingly fast customizable logging library
 </center>
 
 ## Table of Contents
