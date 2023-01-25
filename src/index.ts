@@ -1,6 +1,8 @@
 import { inspect } from 'node:util';
 
-import { stripAnsi } from './ansi';
+import { stripAnsi as _stripAnsi } from './ansi';
+
+export const stripAnsi = _stripAnsi;
 
 export type LogMethodInput =
     | string
@@ -279,7 +281,7 @@ export const createLogger = <A extends string>(
 
                     let inputs = s;
 
-                    for(const processor of completeConfig.preProcessors) {
+                    for (const processor of completeConfig.preProcessors) {
                         inputs = processor(inputs, { name: methodHandle as A, ...method }, completeConfig);
                     }
 
@@ -318,7 +320,7 @@ export const createLogger = <A extends string>(
 
                     let parsedLines = lines;
 
-                    for(const processor of completeConfig.postProcessors) {
+                    for (const processor of completeConfig.postProcessors) {
                         parsedLines = processor(parsedLines, { name: methodHandle as A, ...method }, completeConfig);
                     }
 
