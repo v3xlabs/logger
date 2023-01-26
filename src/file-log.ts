@@ -1,5 +1,5 @@
-import { createWriteStream, existsSync, mkdirSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import fs from 'fs';
+import path from 'path';
 
 import { stripAnsi } from './ansi';
 
@@ -17,7 +17,7 @@ type FileLoggerConfigAppend = {
 };
 
 export const FileLogger = (config: FileLoggerConfig) => {
-    let { path } = config;
+    let { path: filePath } = config;
     const { mode } = config;
 
     // If we are creating a new file generate the file name
@@ -25,18 +25,18 @@ export const FileLogger = (config: FileLoggerConfig) => {
         const { namePattern } = config;
         const calculatedPattern = namePattern;
 
-        path = join(path, calculatedPattern);
+        filePath = path.join(filePath, calculatedPattern);
     }
 
     // Ensure the parent folder exists
-    const folder = resolve(path, '..');
+    const folder = path.resolve(filePath, '..');
 
-    if (!existsSync(folder)) {
-        mkdirSync(folder, { recursive: true });
+    if (!fs.existsSync(folder)) {
+        fs.mkdirSync(folder, { recursive: true });
     }
 
     // Create the stream to write out to
-    const stream = createWriteStream(path, {
+    const stream = fs.createWriteStream(filePath, {
         encoding: 'utf-8',
         autoClose: true,
     });

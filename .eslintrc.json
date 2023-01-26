@@ -17,5 +17,7 @@
         "node": true,
         "jest/globals": true
     },
-    "rules": {}
+    "rules": {
+        "unicorn/prefer-node-protocol": "off"
+    }
 }
